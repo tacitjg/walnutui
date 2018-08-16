@@ -299,6 +299,7 @@
 	},
 	//多选 && 多级列表
 	Walnut.oldMultiSelect = function(obj,act){
+		act = act || "active"
 		this.switchBtn(obj,act);
 		if(w(obj).hasClass("check_all")){
 			var all = obj.parentNode.parentNode;
