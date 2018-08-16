@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/walnutui.css">
+	<link rel="stylesheet" href="font/font_kfxt/iconfont.css">
+	<script src="./walnut/jquery-1.11.3.min.js"></script>
+	<style>
+		body>div{
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<span class="main_switch is_off" id="switchBtn">
+			<b></b>
+		</span>
+	</div>
+
+	<div class="select_box">
+		<span class="list_selected">123</span>
+		<ul class="select_list">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+
+	<div>
+		<span class="radio_btn iconfont icon-RadioDefault">1</span>
+		<span class="radio_btn iconfont icon-RadioDefault icon-RadioSelected">2</span>
+		<span class="radio_btn iconfont icon-RadioDefault">3</span>
+		<span class="radio_btn iconfont icon-RadioDefault">4</span>
+	</div>
+
+	<div>
+		<div class="old_check">
+			<div class="check_head">
+				<span class="check_btn check_all iconfont icon-CheckboxDefuben">班长</span>
+			</div>
+			<div class="check_tr">
+				<div class="check_td">
+					<span class="check_btn check_group iconfont icon-CheckboxDefuben">组长1</span>
+				</div>
+				<div class="check_td">
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+				</div>
+			</div>
+			<div class="check_tr">
+				<div class="check_td">
+					<span class="check_btn check_group iconfont icon-CheckboxDefuben">组长2</span>
+				</div>
+				<div class="check_td">
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+				</div>
+			</div>
+			<div class="check_tr">
+				<div class="check_td">
+					<span class="check_btn check_group iconfont icon-CheckboxDefuben">组长3</span>
+				</div>
+				<div class="check_td">
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="old_check">
+		<div class="check_tr">
+			<div class="check_td">
+				<span class="check_btn check_group iconfont icon-CheckboxDefuben">测试2</span>
+			</div>
+			<div class="check_td">
+				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+			</div>
+		</div>
+	</div>
+	<div class="checkAll" style="margin: 50px;">
+		<dl>
+			<dt class="check_btn iconfont icon-CheckboxDefuben">爷</dt>
+			<dd class="check_group">
+				<dl>
+					<dt class="check_btn iconfont icon-CheckboxDefuben">父</dt>
+					<dd class="check_group">
+						<dl>
+							<dt class="check_btn iconfont icon-CheckboxDefuben">子</dt>
+							<dd class="check_group">
+								<dl>
+									<dt class="check_btn iconfont icon-CheckboxDefuben">孙</dt>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+								</dl>
+							</dd>
+							<dd class="check_group">
+								<dl>
+									<dt class="check_btn iconfont icon-CheckboxDefuben">孙</dt>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
+								</dl>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
+			</dd>
+		</dl>
+	</div>
+	
+	<div>
+		<button class="red_btn right_btn">正确</button>
+		<button class="gray_btn wrong_btn">错误</button>
+		<button class="blue_btn normal_btn">透明弹框</button>
+		<button class="white_btn popups">弹层</button>
+	</div>
+	<div class="lucency_remind">
+	    <span class="lucency_alert"></span>
+	</div>
+	<div class="status_remind">
+	    <span class="status_alert iconfont"></span>
+	</div>
+
+	
+
+		<span class="stepper_percent">
+			<input type="text" class="set_inp" value="0">
+			<span class="step_add"></span>
+			<span class="step_reduce"></span>
+		</span>	
+		<span class="stepper_px">
+			<input type="text" class="set_inp" value="0">
+			<b class="step_add"></b>
+			<b class="step_reduce"></b>
+		</span>	
+
+	<div class="masking"></div>
+	<div class="popup_box">
+		<div class="popup_header">
+			<label>温馨提示</label>
+			<a class="popup_close iconfont icon-Close"></a>
+		</div>
+		<div class="popup_body clearfix">
+			<div class="popup_body_content iconfont icon-Tips"></div>
+			<div class="submit_btn">
+		    	<a class="gray_btn popup_reset fr">弃用</a>
+		    	<a class="red_btn popup_save fr">保存更改</a>
+	    	</div>
+		</div>
+	</div>
+	<div>
+		<span class="tab_card tab_left">1</span>
+		<span class="tab_card tab_between">2</span>
+		<span class="tab_card tab_between">3</span>
+		<span class="tab_card tab_right">4</span>
+	</div>
+
+	
+	<script src="./walnutui.js"></script>
+
+<script>
+	// 开关
+	$("#switchBtn").click(function(){
+		w.switchBtn(this,"is_off")
+	})
+
+	//步进器
+	$(".stepper_percent").on("click",".step_add",function(){
+		w.changeNum(this,5);
+	})
+	$(".stepper_percent").on("click",".step_reduce",function(){
+		w.changeNum(this,-5);
+	})
+	$(".stepper_px").on("click",".step_add",function(){
+		w.changeNum(this,10);
+	})
+	$(".stepper_px").on("click",".step_reduce",function(){
+		w.changeNum(this,-10);
+	})
+	$(".set_inp").on("keyup",function(){
+		w.inputKeyup(this);
+	})
+	//单选
+	$(".radio_btn").on("click",function(){
+		w.singleSelect(this,"icon-RadioSelected")
+	})
+	// 多选(老的)
+	$(".old_check").on("click",".check_btn",function(){
+		w.oldMultiSelect(this,"icon-CheckboxSeleted");
+	})
+	//下弹框
+	$(".right_btn").click(function(){
+		w.statusAlert("正确信息",true)
+	})
+	$(".wrong_btn").click(function(){
+		w.statusAlert("错误信息",false)
+	})
+	$(".normal_btn").click(function(){
+		w.lucencyAlert("这只是一条普通的测试信息")
+	})
+	//去蓝块
+	w.removeBlue();
+	//下拉菜单（不完善）
+	$(".select_box").click(function(){
+		w.dropDown(this);
+	})
+	$(".select_box").on("click",".select_list > li",function(){
+		w.linsenLi(this);
+	})
+	//弹层
+	$(".popups").click(function(){
+		w.popups();
+	})
+	$(".tab_card").on("click",function(){
+		w.singleSelect(this)
+	})
+	//多选（可多级列表）
+	$(".checkAll").on("click",".check_btn",function(){
+		w.switchBtn(this,'icon-CheckboxSeleted');
+		w.multiSelect(this);
+	})
+</script>
+</body>
+
+</html>
