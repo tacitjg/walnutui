@@ -9,7 +9,7 @@
 
 .iconfont {
   font-family:"iconfont" !important;
-  font-size:16px;
+  font-size:14px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -29,11 +29,11 @@
 
 .icon-Mobilephonemodel4:before { content: "\e605"; }
 
-.icon-RadioDefault:before { content: "\e606"; }
+.icon-RadioDefault:before { content: "\e606"; color: #A3B1C7; margin-right: 5px; font-size: 14px;}
 
-.icon-CheckboxDefuben:before { content: "\e607"; }
+.icon-CheckboxDefuben:before { content: "\e607"; color: #A3B1C7; margin-right: 5px;}
 
-.icon-CheckboxSeleted:before { content: "\e608"; }
+.icon-CheckboxSeleted:before { content: "\e608"; color:#3B99FC; margin-right: 5px;}
 
 .icon-Close:before { content: "\e609"; }
 
@@ -41,15 +41,15 @@
 
 .icon-Delete:before { content: "\e60b"; }
 
-.icon-TipsError:before { content: "\e60c"; }
+.icon-TipsError:before { content: "\e60c"; margin-right: 5px; }
 
 .icon-Edit:before { content: "\e60d"; }
 
-.icon-TipsSuccessful:before { content: "\e60e"; }
+.icon-TipsSuccessful:before { content: "\e60e"; margin-right: 5px;}
 
-.icon-RadioSelected:before { content: "\e60f"; }
+.icon-RadioSelected:before { content: "\e60f"; color:#3B99FC; margin-right: 5px; font-size: 14px;}
 
-.icon-Tips:before { content: "\e610"; }
+.icon-Tips:before { content: "\e610"; color: #FFAA00; margin-right: 5px;}
 
 .icon-Drag1:before { content: "\e612"; }
 
