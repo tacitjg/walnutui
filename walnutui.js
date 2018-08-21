@@ -3,54 +3,46 @@
 		return new Walnut.fn.init( selector, context );
 	}
 	Walnut.fn = Walnut.prototype = {
-		each:function(fn){
+		each: function(fn){
 			for(var i = 0 ,len = this.length; i<len; i++){
 				fn.call(this[i],i);
 			}
 		},
-		parent:function(){
+		parent: function(){
 			var parent = Walnut(),
 				idx = 0;
 			this.each(function(){
 				if (!w.contains(parent,this.parentNode)) {
 					parent[idx] = this.parentNode;
-					idx++;
-					parent.length = idx;
+					parent.length = ++idx;
 				}
 			})
 			return parent;
 		},
-		parents:function(selector){
+		parents: function(selector){
 			if (!selector) return this.parent();
-			var type = selector.charAt(0);
-			var p = this.parent()[0];
-			if (type === '#') {
-				if (p === window.document) {
-					return Walnut(document);
-				}else if (p.id === selector.substring(1)) {
-					return Walnut(p);
-				}else{
-					return Walnut(p).parents(selector);
-				}
-			}else if (type === '.') {
-				if (p === window.document) {
-					return Walnut(document);
-				}else if (p.className === selector.substring(1)) {
-					return Walnut(p);
-				}else{
-					return Walnut(p).parents(selector);
-				}
-			}else{
-				if (p === window.document) {
-					return Walnut(document);
-				}else if (p.tagName.toLowerCase() === selector) {
-					return Walnut(p);
-				}else{
-					return Walnut(p).parents(selector);
-				}
+			var p = this[0].parentNode;
+			if (!p || p.nodeType===9) {
+				return Walnut();
 			}
+			return w.isEqual(p,selector) ? Walnut(p) : Walnut(p).parents(selector);
 		},
-		siblings:function(){
+		find: function(selector){
+			var finds = Walnut(),
+				idx = 0;
+			if (!selector) return finds;
+			this.each(function(){
+				var elements = this.querySelectorAll(selector)
+				for (var i = 0; i < elements.length ; i++) {
+					if (!w.contains(finds, elements[i])) {
+						finds[i] = elements[i];
+						finds.length = ++idx;
+					}
+				}
+			})
+			return finds;
+		},
+		siblings: function(){
 			var elem = this[0],
 				siblings = Walnut(),
 				idx = 0,
@@ -58,13 +50,12 @@
 			for ( ; n; n = n.nextSibling ) {
 				if ( n.nodeType === 1 && n !== elem && n.nodeName.toLowerCase() !== 'script') {
 					siblings[idx] = n;
-					idx++;
-					siblings.length = idx;
+					siblings.length = ++idx;
 				}
 			}
 			return siblings;
 		},
-		prev:function(obj){
+		prev: function(obj){
 			var prev=this[0].previousSibling;
 			while(prev){
 				if(prev.nodeType===1){ 
@@ -74,7 +65,7 @@
 			}
 			return false;
 		},
-		next:function(obj){
+		next: function(obj){
 			var next=this[0].nextSibling;
 			while(next){
 				if(next.nodeType===1){ 
@@ -84,10 +75,10 @@
 			}
 			return false;
 		},
-		hasClass:function(cName){
+		hasClass: function(cName){
 			return this[0] ? !!this[0].className.match( new RegExp( "(\\s|^)" + cName + "(\\s|$)") ) : false;
 		},
-		addClass:function(cName){
+		addClass: function(cName){
 			this.each(function(){
 				if( !Walnut(this).hasClass(cName) ){
 					this.className += (this.className ? ' ' : '') + cName; 
@@ -95,7 +86,7 @@
 			})
 			return this;
 		},
-		removeClass:function(cName){
+		removeClass: function(cName){
 			this.each(function(){
 				if( Walnut(this).hasClass(cName) ){ 
 					this.className = this.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" ), " " ).replace(/(^\s+)|(\s+$)/g,''); 
@@ -104,9 +95,21 @@
 			})
 		},
 		css: function (prop, value) {
-			this.each(function (){
-				this.style[prop] = value;
-			});
+			if (!value) {
+				if (typeof prop === 'object') {
+					this.each(function (){
+						for(var i in prop){
+							this.style[i] = prop[i];
+						}
+					});
+				}else{
+					return w.getStyle(this[0],prop);
+				}
+			}else{
+				this.each(function (){
+					this.style[prop] = value;
+				});
+			}
 			return this;
 		},
 		show: function (){
@@ -127,7 +130,7 @@
 			});
 			return this;
 		},
-		eq:function(num){
+		eq: function(num){
 			for(var i = 0 ,len = this.length; i<len; i++){
 				if (num == i) {
 					return Walnut(this[i])
@@ -149,26 +152,16 @@
 					break;
 				case '.':
 					var elements = document.querySelectorAll(selector);
-					if (elements.forEach) {
-						elements.forEach(function(item,i){
-							_this[i] = item;
-							_this.length = i+1;
-						})
-					}else if (elements.length){
-						_this[0] = elements[0];
-						_this.length = 1;
+					for (var i = 0; i < elements.length ; i++) {
+						_this[i] = elements[i];
+						_this.length = i+1;
 					}
 					break;
 				default:
 					var elements = document.getElementsByTagName(selector);
-					if (elements.forEach) {
-						elements.forEach(function(item,i){
-							_this[i] = item;
-							_this.length = i+1;
-						})
-					}else if (elements.length){
-						_this[0] = elements[0];
-						_this.length = 1;
+					for (var i = 0; i < elements.length ; i++) {
+						_this[i] = elements[i];
+						_this.length = i+1;
 					}
 			}
 			return this;
@@ -189,6 +182,13 @@
 		}else{
 			obj.attachEvent('on'+etype,fn);
 		}
+	}
+	Walnut.getStyle = function(obj,attr) {
+		return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+	}
+	Walnut.isEqual = function(obj,selector) {
+		var type = selector.charAt(0);
+		return type==='#' && "#"+obj.id===selector || type==='.' && obj.className.indexOf(selector.substring(1))!==-1 || obj.tagName.toLowerCase() === selector;
 	}
 	//设备信息
 	Walnut.device = function(){
@@ -456,7 +456,7 @@
 						is_check = false;
 						break;
 					}
-					next = w(next).next() ? w(next).next()[0] : null;
+					next = w(next).next()[0];
 				}
 				if (is_check){
 					w(upper_dt).addClass('icon-CheckboxSeleted');
@@ -488,32 +488,33 @@
 						w(dd).removeClass('icon-CheckboxSeleted');
 					}
 				}
-				dd = w(dd).next() ? w(dd).next()[0] : null;
+				dd = w(dd).next()[0];
 			}
 		}
+		var _obj = w(obj);
 		if (obj.tagName.toLowerCase()==='dt') {
-			if (w(obj).hasClass('icon-CheckboxSeleted')) {
+			if (_obj.hasClass('icon-CheckboxSeleted')) {
 				//向下全部选中
-				innerChange(w(obj).next() ? w(obj).next()[0] : null,true);
+				innerChange(_obj.next()[0],true);
 				//向上判断
 				outerAdd(obj.parentNode.parentNode);
 			}else{
 				//向下全部取消
-				innerChange(w(obj).next() ? w(obj).next()[0] : null,false);
+				innerChange(_obj.next()[0],false);
 				//向上分组取消全选
 				outerRemove(obj.parentNode.parentNode)
 			}
 		}else{
 			var first_dt = obj.parentNode.children[0];
-			if (w(obj).hasClass('icon-CheckboxSeleted')) {
+			if (_obj.hasClass('icon-CheckboxSeleted')) {
 				var is_check = true;
-				var next = w(first_dt).next() ? w(first_dt).next()[0] : null;
+				var next = w(first_dt).next()[0];
 				while(next){
 					if (!w(next).hasClass('icon-CheckboxSeleted')) {
 						is_check = false;
 						break;
 					}
-					next = w(next).next() ? w(next).next()[0] : null;
+					next = w(next).next()[0];
 				}
 				if (is_check) {
 					w(first_dt).addClass('icon-CheckboxSeleted');
@@ -528,7 +529,6 @@
 				outerRemove(obj.parentNode.parentNode);
 			}
 		}
-
 	}
 
 

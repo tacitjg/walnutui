@@ -7,9 +7,13 @@
 	<link rel="stylesheet" href="font/font_kfxt/iconfont.css">
 	<script src="./walnut/jquery-1.11.3.min.js"></script>
 	<style>
+		body{background: #486;padding: 10px;}
 		body>div{
 			margin-bottom: 10px;
 		}
+		hr{margin: 10px 0;}
+		.checkAll dl dl{padding-left: 26px;margin-bottom: 5px;}
+		.checkAll dt{min-width: 100px;}
 	</style>
 </head>
 <body>
@@ -18,7 +22,7 @@
 			<b></b>
 		</span>
 	</div>
-
+	<hr>
 	<div class="select_box">
 		<span class="list_selected">123</span>
 		<ul class="select_list">
@@ -30,14 +34,14 @@
 			<li>6</li>
 		</ul>
 	</div>
-
+	<hr>
 	<div>
 		<span class="radio_btn iconfont icon-RadioDefault">1</span>
 		<span class="radio_btn iconfont icon-RadioDefault icon-RadioSelected">2</span>
 		<span class="radio_btn iconfont icon-RadioDefault">3</span>
 		<span class="radio_btn iconfont icon-RadioDefault">4</span>
 	</div>
-
+	<hr>
 	<div>
 		<div class="old_check">
 			<div class="check_head">
@@ -81,8 +85,7 @@
 			</div>
 		</div>
 	</div>
-	
-
+	<hr>
 	<div class="old_check">
 		<div class="check_tr">
 			<div class="check_td">
@@ -97,46 +100,58 @@
 			</div>
 		</div>
 	</div>
-	<div class="checkAll" style="margin: 50px;">
+	<hr>
+	<div class="checkAll">
 		<dl>
-			<dt class="check_btn iconfont icon-CheckboxDefuben">爷</dt>
+			<dt class="check_btn iconfont icon-CheckboxDefuben">卡密建国</dt>
 			<dd class="check_group">
 				<dl>
-					<dt class="check_btn iconfont icon-CheckboxDefuben">父</dt>
+					<dt class="check_btn iconfont icon-CheckboxDefuben">孙悟空</dt>
 					<dd class="check_group">
 						<dl>
-							<dt class="check_btn iconfont icon-CheckboxDefuben">子</dt>
-							<dd class="check_group">
-								<dl>
-									<dt class="check_btn iconfont icon-CheckboxDefuben">孙</dt>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-								</dl>
-							</dd>
-							<dd class="check_group">
-								<dl>
-									<dt class="check_btn iconfont icon-CheckboxDefuben">孙</dt>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-									<dd class="check_btn iconfont icon-CheckboxDefuben">123</dd>
-								</dl>
-							</dd>
+							<dt class="check_btn iconfont icon-CheckboxDefuben">龟仙人</dt>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">克林</dd>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">雅木茶</dd>
+						</dl>
+					</dd>
+					<dd class="check_group">
+						<dl>
+							<dt class="check_btn iconfont icon-CheckboxDefuben">孙悟饭</dt>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">悟天</dd>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">小芳</dd>
+						</dl>
+					</dd>
+				</dl>
+			</dd>
+			<dd class="check_group">
+				<dl>
+					<dt class="check_btn iconfont icon-CheckboxDefuben">弗利萨</dt>
+					<dd class="check_group">
+						<dl>
+							<dt class="check_btn iconfont icon-CheckboxDefuben">贝吉塔</dt>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">特兰克斯</dd>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">布拉</dd>
+						</dl>
+					</dd>
+					<dd class="check_group">
+						<dl>
+							<dt class="check_btn iconfont icon-CheckboxDefuben">基纽</dt>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">巴特</dd>
+							<dd class="check_btn iconfont icon-CheckboxDefuben">利库姆</dd>
 						</dl>
 					</dd>
 				</dl>
 			</dd>
 		</dl>
 	</div>
-	
+	<hr>
 	<div>
 		<button class="red_btn right_btn">正确</button>
 		<button class="gray_btn wrong_btn">错误</button>
 		<button class="blue_btn normal_btn">透明弹框</button>
 		<button class="white_btn popups">弹层</button>
 	</div>
+	<hr>
 	<div class="lucency_remind">
 	    <span class="lucency_alert"></span>
 	</div>
@@ -144,18 +159,17 @@
 	    <span class="status_alert iconfont"></span>
 	</div>
 
-	
-
-		<span class="stepper_percent">
-			<input type="text" class="set_inp" value="0">
-			<span class="step_add"></span>
-			<span class="step_reduce"></span>
-		</span>	
-		<span class="stepper_px">
-			<input type="text" class="set_inp" value="0">
-			<b class="step_add"></b>
-			<b class="step_reduce"></b>
-		</span>	
+	<span class="stepper_percent">
+		<input type="text" class="set_inp" value="0">
+		<span class="step_add"></span>
+		<span class="step_reduce"></span>
+	</span>	
+	<span class="stepper_px">
+		<input type="text" class="set_inp" value="0">
+		<b class="step_add"></b>
+		<b class="step_reduce"></b>
+	</span>	
+	<hr>
 
 	<div class="masking"></div>
 	<div class="popup_box">
