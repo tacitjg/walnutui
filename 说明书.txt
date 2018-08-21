@@ -8,14 +8,14 @@ Limui简单说明（新增样式和方法请按设计规范走）：
 
 ------------------------------ 浮动 ------------------------------
 
-fl 						左浮动
-fr 						右浮动
+fl 					左浮动
+fr 					右浮动
 clearfix 				清除浮动
 
 
 ------------------------------ 状态 ------------------------------
 
-error_border 			变红边框
+error_border 				变红边框
 
 over_row 				单行溢出变省略号
 over_rows 				两行溢出变省略号，可新增多行（有兼容问题）
@@ -30,8 +30,8 @@ white_btn 				白色按钮hover加蓝色边框
 
 ------------------------------ 步进器 ------------------------------
 
-stepper_percent 		百分比步进器（父级）
-stepper_px 				px步进器
+stepper_percent 			百分比步进器（父级）
+stepper_px 				px步进器(父级)
 set_inp 				步进器输入框（必须input）
 step_add 				步增
 step_reduce 			步减
@@ -42,13 +42,13 @@ a_link 					带下划线和hover效果的蓝色链接（可用a以外标签）
 
 ------------------------------ 单选按钮 ------------------------------
 
-radio_btn											单选
-icon-RadioDefault 									圆icon未选中
+radio_btn						单选
+iconfont icon-RadioDefault 					圆icon未选中
 iconfont icon-RadioDefault icon-RadioSelected 		圆icon选中
 
 ------------------------------ 多选按钮 ------------------------------
-check_btn 											多选
-iconfont icon-CheckboxDefuben 						对号未选中
+check_btn 						多选
+iconfont icon-CheckboxDefuben 				对号未选中
 iconfont icon-CheckboxDefuben icon-CheckboxSeleted 	对号选中
 
 ------------------------------ 选项卡 ------------------------------
@@ -62,26 +62,26 @@ active 					选择项
 	
 ------------------------------ 开关滑块 ------------------------------
 
-main_switch 			开关（父级）
-b 						滑块
+main_switch 				开关（父级）
+b 					滑块
 is_off 					关
 
 ------------------------------ 下拉菜单 ------------------------------
 
 select_box 				菜单栏（父级）
-list_selected 			结果展示
-select_list 			列表（ul）
-li						列表项
+list_selected 				结果展示
+select_list 				列表（ul）
+li					列表项
 disabled 				禁选项
 active 					选择项
 
 ------------------------------ 状态提醒弹框 ------------------------------
 
-lucency_remind 			透明弹框（局部应用，父级）
-lucency_alert 			子级
+lucency_remind 				透明弹框（局部应用，父级）
+lucency_alert 				子级
 
-status_remind 			全局弹框（全局，顶部，父级）
-status_alert 			子级
+status_remind 				全局弹框（全局，顶部，父级）
+status_alert 				子级
 
 
 ------------------------------ 蒙版 ------------------------------
@@ -92,12 +92,12 @@ masking 				黑色0.7透明度遮罩
 ------------------------------ 弹层 ------------------------------
 
 popup_box 				弹层（父级）
-popup_header 			头部（子）
+popup_header 				头部（子）
 popup_close				关闭按钮（孙）
-iconfont icon-Close 	关闭icon
+iconfont icon-Close 			关闭icon
 popup_body 				内容（子）
-popup_body_content 		文本内容（孙）
-iconfont icon-Tips 		黄色叹号icon
+popup_body_content 			文本内容（孙）
+iconfont icon-Tips 			黄色叹号icon
 submit_btn 				按钮块（孙）
 
 
@@ -108,8 +108,20 @@ submit_btn 				按钮块（孙）
 
 
 仿jquery方法
-目前支持：	each	parent	parents	siblings	prev	next	hasClass	addClass	removeClass
-			css 	show	hide	on			eq
+目前支持：	each
+		parent
+		parents
+		siblings
+		prev
+		next
+		hasClass
+		addClass
+		removeClass
+		css
+		show
+		hide
+		on
+		eq
 
 所有方法挂载在w上，使用方法同jq
 
