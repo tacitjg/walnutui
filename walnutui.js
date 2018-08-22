@@ -10,37 +10,28 @@
 		},
 		parent: function(){
 			var parent = Walnut(),
-				idx = 0;
+				elements = [];
 			this.each(function(){
-				if (!w.contains(parent,this.parentNode)) {
-					parent[idx] = this.parentNode;
-					parent.length = ++idx;
-				}
+				elements.push(this.parentNode);
 			})
-			return parent;
+			return w.makeWalnut.call(parent, elements ,'filter');
 		},
 		parents: function(selector){
 			if (!selector) return this.parent();
-			var p = this[0].parentNode;
+			var p = this[0] ? this[0].parentNode : null;
 			if (!p || p.nodeType===9) {
 				return Walnut();
 			}
 			return w.isEqual(p,selector) ? Walnut(p) : Walnut(p).parents(selector);
 		},
 		find: function(selector){
-			var finds = Walnut(),
-				idx = 0;
+			var finds = Walnut();
 			if (!selector) return finds;
+			var elements = [];
 			this.each(function(){
-				var elements = this.querySelectorAll(selector)
-				for (var i = 0; i < elements.length ; i++) {
-					if (!w.contains(finds, elements[i])) {
-						finds[i] = elements[i];
-						finds.length = ++idx;
-					}
-				}
+				elements = elements.concat(Array.prototype.slice.call(this.querySelectorAll(selector)));
 			})
-			return finds;
+			return w.makeWalnut.call(finds, elements ,'filter');
 		},
 		siblings: function(){
 			var elem = this[0],
@@ -124,6 +115,11 @@
 			})
 			return this;
 		},
+		remove: function(){
+			this.each(function(){
+				this.parentNode.removeChild(this);
+			})
+		},
 		on: function (type, fn, useCaptrue){
 			this.each(function () {
 				window.addEventListener ? this.addEventListener(type, fn, useCaptrue || false) : this.attachEvent('on' + type, fn);
@@ -136,7 +132,7 @@
 					return Walnut(this[i])
 				}
 			}
-		},
+		}
 	}
 	var init = Walnut.fn.init = function(selector,context) {
 		if(!selector) {
@@ -152,24 +148,16 @@
 					break;
 				case '.':
 					var elements = document.querySelectorAll(selector);
-					for (var i = 0; i < elements.length ; i++) {
-						_this[i] = elements[i];
-						_this.length = i+1;
-					}
-					break;
+					return w.makeWalnut.call(_this, elements);
 				default:
 					var elements = document.getElementsByTagName(selector);
-					for (var i = 0; i < elements.length ; i++) {
-						_this[i] = elements[i];
-						_this.length = i+1;
-					}
+					return w.makeWalnut.call(_this, elements);
 			}
 			return this;
 		}else if (typeof selector === "function") {
-			this.addEvent(window,'load',selector)
-			return this;
-		} else if (selector.nodeType) {
-			this.context = this[0] = selector;
+			w.addEvent(window,'load',selector);
+		}else if (selector.nodeType) {
+			this[0] = selector;
 			this.length = 1;
 			return this;
 		} 
@@ -190,6 +178,23 @@
 		var type = selector.charAt(0);
 		return type==='#' && "#"+obj.id===selector || type==='.' && obj.className.indexOf(selector.substring(1))!==-1 || obj.tagName.toLowerCase() === selector;
 	}
+	Walnut.contains = function(arr,ele){
+		for(var i = 0 ,len = arr.length; i<len; i++){
+			if (arr[i] === ele) {
+				return true;
+			}
+		}
+	};
+	Walnut.makeWalnut = function(arr,needfilter){
+		var idx = 0;
+		for(var i = 0 ,len = arr.length; i<len; i++){
+			if (!needfilter || arr[i] && !w.contains(this, arr[i])) {
+				this[idx] = arr[i];
+				this.length = ++idx;
+			}
+		}
+		return this;
+	};
 	//设备信息
 	Walnut.device = function(){
 		var deviceObj={
@@ -238,16 +243,6 @@
 		}else{
 			return "Portrait";
 		}
-	};
-	Walnut.contains = function(arr,ele){
-		var had = false;
-		for(var i = 0 ,len = arr.length; i<len; i++){
-			if (arr[i] === ele) {
-				had = true;
-				break;
-			}
-		}
-		return had;
 	};
 	//开关
 	Walnut.switchBtn = function(obj,act){
