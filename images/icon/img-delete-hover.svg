@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <rect id="合并形状-a" width="10" height="2" x="3" y="7"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <rect width="16" height="16" fill="#FF1919" rx="8"/>
+    <use fill="#FFF" xlink:href="#合并形状-a"/>
+    <rect width="9" height="1" x="3.5" y="7.5" stroke="#FFF"/>
+  </g>
+</svg>

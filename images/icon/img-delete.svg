@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <path id="combined-shape-copy-2-a" d="M0,8 C0,3.581722 3.59071231,0 8,0 C12.418278,0 16,3.59071231 16,8 C16,12.418278 12.4092877,16 8,16 C3.581722,16 0,12.4092877 0,8 Z M3,7 L3,9 L13,9 L13,7 L3,7 Z"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <use fill="#FFF" xlink:href="#combined-shape-copy-2-a"/>
+    <path stroke="#FFF" d="M0.5,8 C0.5,12.1363371 3.86105385,15.5 8,15.5 C12.1363371,15.5 15.5,12.1389461 15.5,8 C15.5,3.86366287 12.1389461,0.5 8,0.5 C3.86366287,0.5 0.5,3.86105385 0.5,8 Z M2.5,6.5 L13.5,6.5 L13.5,9.5 L2.5,9.5 L2.5,6.5 Z"/>
+  </g>
+</svg>

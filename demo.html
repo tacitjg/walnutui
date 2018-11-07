@@ -5,29 +5,255 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="css/walnutui.css">
 	<link rel="stylesheet" href="font/font_kfxt/iconfont.css">
+	<link rel="stylesheet" href="font/font_fkd/iconfont.css">
 	<script src="./walnutui.js"></script>
-	<script src="./walnut/jquery-1.11.3.min.js"></script>
+	<script src="./walnut/jquery-1.11.3.js"></script>
 	<style>
-		body{background: #486;padding: 10px;}
-		body>div{
-			margin-bottom: 10px;
+		body{
+			background: -webkit-radial-gradient(center 40%,circle,#fff 10%,#D8F5F4 11%,#A7EFEC 20%,#92ECE5 22%,#B7FFFC 23%,#298BEB 100%);
+			background: radial-gradient(center 40%,circle,#fff 10%,#D8F5F4 11%,#A7EFEC 20%,#92ECE5 22%,#B7FFFC 23%,#298BEB 100%);
+			background: #134;
 		}
-		hr{margin: 10px 0;}
+		#guide{width: 800px; margin: 20px auto; box-shadow: 0 0 2px 0 rgba(0,0,0,0.05), 0 1px 4px 0 rgba(0,0,0,0.10), 0 2px 8px 0 rgba(0,0,0,0.20); background: #fbfbfb;padding: 10px; }
 		.checkAll dl dl{padding-left: 26px;margin-bottom: 5px;}
 		.checkAll dt{min-width: 100px;}
+		hr{margin-top: 10px}
+		h2{
+			font-size: 48px;
+			line-height: 72px;
+		}
+		h3{
+			background: #b3d8d1;
+			margin-bottom: 5px;
+			color: #FFF;
+			height: 20px;
+			line-height: 20px;
+			padding-left: 2px;
+			font-size: 12px;
+		}
+		h4{
+			font-size: 14px;
+			line-height: 18px;
+		}
+		.copy_btn{
+			color: #797777;
+			width: 30px;
+			display: inline-block;
+			font-weight: bold;
+			background: beige;
+			outline: 0;
+			border: 1px solid #797777;
+			margin-left: 10px;
+			cursor: pointer;
+		}
+		.copy_btn:hover{
+			background: cadetblue;
+			color: #FFF;
+		}
+		.copy_text{
+			opacity: 0;
+			display: inline-block;
+			width: 0;
+			height: 0;
+		}
+		.icons{
+			padding: 0 30px;
+		}
+		.icon{
+			float: left;
+			font-size: 36px;
+			margin-right: 20px;
+			cursor: pointer;
+			position: relative;
+			color: #888 !important;
+		}
+		.icons .icon-RadioDefault:before{
+			font-size:36px!important;
+		}
+		.icons .icon-RadioSelected:before{
+			font-size:36px!important;
+		}
+		.icon input{
+			z-index: 99;
+		}
+		/*拖动排序-样式*/
+		.move_ul{width: 40%;margin:5px;}
+		.move_li{padding-left:10px; color: #000; position: relative;width: 100%;height: 36px;line-height: 36px;background:#a6c3e0;margin-bottom: 10px;box-sizing: border-box;}
+		.activation .move_li{cursor: move;}
+		.move_li.dropping_item{border: 2px dashed #3b99fc;background: #cde;}
+		.move_li.dropping_item *{visibility: hidden!important;}
+		.move_li .move_by_me{position: absolute;top: 50%;right: 10px;width: 20px;height: 20px;margin-top: -10px;background: #f2f2f2;border-radius: 50%; cursor: pointer;}
+		/*拖动排序-结束*/
+		h2{font-size: 48px; line-height: 72px; }
+		h3{background: #b3d8d1; margin-bottom: 5px; color: #FFF; height: 20px; line-height: 20px; padding-left: 2px; font-size: 12px; }
+		h4{font-size: 14px; line-height: 18px; }
+		.copy_btn{color: #797777; width: 30px; display: inline-block; font-weight: bold; background: beige; outline: 0; border: 1px solid #797777; margin-left: 10px; cursor: pointer; }
+		.copy_btn:hover{background: cadetblue; color: #FFF; }
+		.copy_text{opacity: 0; display: inline-block; width: 0; height: 0; }
+		.icons{padding: 10px 30px; }
+		.icon{float: left; width: 30px; height: 30px; font-size: 36px;margin: 10px; cursor: pointer; position: relative; color: #888 !important;}
+		.icons .icon-RadioDefault:before{font-size:36px!important; }
+		.icons .icon-RadioSelected:before{font-size:36px!important; }
+		.icon input{z-index: 99; }
 	</style>
 </head>
 <body>
+<div id="guide">
+	<h2>Walnut使用指南</h2>
+	<h4>点击复制即可获取DOM结构</h4>
+	<hr>
+	<h3>颜色规范（点击即可复制）</h3>
+	<p style="margin: 3px 0 ;color:#4D71B1">边框&线</p>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#A3B1C7" style="color:#FFF; background-color: #A3B1C7" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#A3B1C7</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#CED5E0" style="color:#FFF; background-color: #CED5E0" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#CED5E0</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#D8DFEA" style="color:#FFF; background-color: #D8DFEA" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#D8DFEA</textarea>
+	<p style="margin: 3px 0 ;color:#4D71B1">文本</p>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#28334B" style="color:#FFF; background-color: #28334B" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#28334B</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#62778C" style="color:#FFF; background-color: #62778C" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#62778C</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#8DA2B5" style="color:#FFF; background-color: #8DA2B5" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#8DA2B5</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#218BFC" style="color:#FFF; background-color: #218BFC" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#218BFC</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#F44024" style="color:#FFF; background-color: #F44024" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#F44024</textarea>
+	<p style="margin: 3px 0 ;color:#4D71B1">页面</p>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#3B99FC" style="color:#FFF; background-color: #3B99FC" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#3B99FC</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#23AD3E" style="color:#FFF; background-color: #23AD3E" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#23AD3E</textarea>
+	<input class="white_btn" type="button" onclick="w.copyTag(this)" value="#F44024" style="color:#FFF; background-color: #F44024" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">#F44024</textarea>
+
+
+	<hr>
+	<h3>文字规范</h3>
+
+	<p style="margin: 3px 0 ;color:#4D71B1">字体</p>
+
+	<span>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,"Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",SimSun, sans-serif;</span>
+	<div style="margin-bottom: 10px;">
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: auto">
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,"Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",SimSun, sans-serif;</textarea>
+	</div>
+
+	<p style="margin: 5px 0 ;color:#4D71B1">字号&字间距&行高(点击获取类名)</p>
 	<div>
-		<span class="main_switch is_off" id="switchBtn">
+		<span>12px ,字间距0.6，行高为18(默认字号)</span>
+	</div>
+	<div>
+		<span class="font14">14px ,字间距0.6，行高为20</span>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">font14</textarea>
+	</div>
+	<div>
+		<span class="font16">16px ,字间距0.8，行高为24</span>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">font16</textarea>
+	</div>
+	<div>
+		<span class="font18">18px ,字间距0.8，行高为26</span>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">font18</textarea>
+	</div>
+
+
+	<hr>
+	<h3>跳转</h3>
+
+	<span class="a_link">链接hover效果（带下划线）</span>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<span class="a_link"></span>
+	</textarea>
+
+	<span class="alink">链接hover效果（不带下划线）</span>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<span class="alink"></span>
+	</textarea>
+
+	<hr>
+	<h3>文字溢出(点击获取类名)</h3>
+
+	<div style=" width:440px;height: 40px; ">
+		<p style="width: 400px; float: left; height: 30px; line-height: 20px;border:1px solid #28334B;padding: 5px;" class="over_row" ><span style="color: #4D71B1">单行文本溢出变省略号，可自行修改为多行---></span>宴桃园豪杰三结义 斩黄巾英雄首立功 张翼德怒鞭督邮 何国舅谋诛宦竖</p>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="float: left;">
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">over_row</textarea>
+	</div>
+
+	<div style=" width:440px;height: 50px; ">
+		<p style="width: 400px; float: left; height: 50px; line-height: 20px;border:1px solid #28334B;padding: 5px;" class="over_rows" ><span style="color: #4D71B1">双行文本溢出变省略号，可自行修改为多行---></span>议温明董卓叱丁原 馈金珠李肃说吕布 废汉帝陈留践位 谋董贼孟德献刀 发矫诏诸镇应曹公 破关兵三英战吕布</p>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="float: left;">
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">over_rows</textarea>
+	</div>
+
+
+	<hr>
+	<h3>透明度(点击获取类名)</h3>
+	<input class="white_btn alpha4" type="button" onclick="w.copyTag(this)" value="#000(opacity .4)" style="background: #000;color: #FFF" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">alpha4</textarea>
+
+	<input class="white_btn alpha6" type="button" onclick="w.copyTag(this)" value="#000(opacity .6)" style="background: #000;color: #FFF" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">alpha6</textarea>
+
+	<input class="white_btn alpha7" type="button" onclick="w.copyTag(this)" value="#000(opacity .7)" style="background: #000;color: #FFF" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">alpha7</textarea>
+
+
+	<hr>
+	<h3>输入框键入效果</h3>
+
+	<input placeholder="input框键入效果" style="padding-left: 5px">
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<input placeholder="input框键入效果" style="padding-left: 5px">
+	</textarea>
+
+	<input class="error_border" placeholder="错误输入效果" style="padding-left: 5px">
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<input class="error_border" placeholder="错误输入效果" style="padding-left: 5px">
+	</textarea>
+
+	<p style="margin:5px 0"></p>
+
+	<textarea name="" id="" cols="30" rows="10" style="width:200;height:100px"></textarea>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 8px;">
+	<input type="text" value='<textarea name="" cols="30" rows="10"></textarea>' style="width: auto;height: auto;opacity: 0">
+
+	<hr>
+	<h3>开关</h3>
+	<div style="display: inline-block;">
+		<span class="main_switch " id="switchBtn">
 			<b></b>
 		</span>
 	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 8px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div>
+			<span class="main_switch is_off" id="switchBtn">
+				<b></b>
+			</span>
+		</div>
+	</textarea>
+
 	<hr>
-	<div class="select_box">
-		<span class="list_selected">123</span>
+	<h3>下拉菜单</h3>
+	<div class="select_box" style="width: 200px">
+		<p class="list_selected select_arrow">123</p>
 		<ul class="select_list">
-			<li>1</li>
+			<li class="disabled alpha6">1</li>
 			<li>2</li>
 			<li>3</li>
 			<li>4</li>
@@ -35,73 +261,119 @@
 			<li>6</li>
 		</ul>
 	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 10px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="select_box">
+			<p class="list_selected select_arrow">123</p>
+			<ul class="select_list">
+				<li class="disabled alpha6">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+			</ul>
+		</div>
+	</textarea>
+
 	<hr>
-	<div>
+	<h3>单选</h3>
+	<div style="display: inline-block;">
 		<span class="radio_btn iconfont icon-RadioDefault">1</span>
 		<span class="radio_btn iconfont icon-RadioDefault icon-RadioSelected">2</span>
 		<span class="radio_btn iconfont icon-RadioDefault">3</span>
 		<span class="radio_btn iconfont icon-RadioDefault">4</span>
 	</div>
-	<hr>
-	<div>
-		<div class="old_check">
-			<div class="check_head">
-				<span class="check_btn check_all iconfont icon-CheckboxDefuben">班长</span>
-			</div>
-			<div class="check_tr">
-				<div class="check_td">
-					<span class="check_btn check_group iconfont icon-CheckboxDefuben">组长1</span>
-				</div>
-				<div class="check_td">
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-				</div>
-			</div>
-			<div class="check_tr">
-				<div class="check_td">
-					<span class="check_btn check_group iconfont icon-CheckboxDefuben">组长2</span>
-				</div>
-				<div class="check_td">
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-				</div>
-			</div>
-			<div class="check_tr">
-				<div class="check_td">
-					<span class="check_btn check_group iconfont icon-CheckboxDefuben">组长3</span>
-				</div>
-				<div class="check_td">
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-					<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-				</div>
-			</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 1px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div>
+			<span class="radio_btn iconfont icon-RadioDefault">1</span>
+			<span class="radio_btn iconfont icon-RadioDefault icon-RadioSelected">2</span>
+			<span class="radio_btn iconfont icon-RadioDefault">3</span>
+			<span class="radio_btn iconfont icon-RadioDefault">4</span>
 		</div>
-	</div>
+	</textarea>
+
 	<hr>
-	<div class="old_check">
+	<h3>二级列表</h3>
+	<div class="old_check" style="display: inline-block;">
 		<div class="check_tr">
-			<div class="check_td">
-				<span class="check_btn check_group iconfont icon-CheckboxDefuben">测试2</span>
+			<div class="check_td" style="display: inline-block;margin-right:10px;">
+				<span class="check_btn check_group iconfont icon-CheckboxDefuben">小鱼</span>
 			</div>
-			<div class="check_td">
-				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
-				<span class="check_btn iconfont icon-CheckboxDefuben">跑龙套的</span>
+			<div class="check_td" style="display: inline-block;">
+				<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+				<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+				<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
 			</div>
 		</div>
 	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="old_check">
+			<div class="check_tr">
+				<div class="check_td" style="display: inline-block;margin-right:10px;">
+					<span class="check_btn check_group iconfont icon-CheckboxDefuben">二级</span>
+				</div>
+				<div class="check_td" style="display: inline-block;">
+					<span class="check_btn iconfont icon-CheckboxDefuben">一级</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">一级</span>
+				</div>
+			</div>
+		</div>
+	</textarea>
+
 	<hr>
+	<h3>三级列表</h3>
+	<div>
+		<div class="old_check" >
+			<div class="check_head">
+				<span class="check_btn check_all iconfont icon-CheckboxDefuben">大鱼</span>
+			</div>
+			<div class="check_tr">
+				<div class="check_td" style="display: inline-block;margin-right:10px;">
+					<span class="check_btn check_group iconfont icon-CheckboxDefuben">小鱼</span>
+				</div>
+				<div class="check_td" style="display: inline-block;">
+					<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+				</div>
+			</div>
+			<div class="check_tr">
+				<div class="check_td" style="display: inline-block;margin-right:10px;">
+					<span class="check_btn check_group iconfont icon-CheckboxDefuben">小鱼</span>
+				</div>
+				<div class="check_td" style="display: inline-block;">
+					<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">虾米</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 0;margin-top: 5px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="old_check">
+			<div class="check_tr">
+				<div class="check_td" style="display: inline-block;margin-right:10px;">
+					<span class="check_btn check_group iconfont icon-CheckboxDefuben">二级</span>
+				</div>
+				<div class="check_td" style="display: inline-block;">
+					<span class="check_btn iconfont icon-CheckboxDefuben">一级</span>
+					<span class="check_btn iconfont icon-CheckboxDefuben">一级</span>
+				</div>
+			</div>
+		</div>
+	</textarea>
+
+
+	<hr>
+	<h3>多级列表（支持正无穷）</h3>
 	<div class="checkAll">
 		<dl>
 			<dt class="check_btn iconfont icon-CheckboxDefuben">卡密建国</dt>
@@ -145,14 +417,874 @@
 			</dd>
 		</dl>
 	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 0;margin-top: 5px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="checkAll">
+			<dl>
+				<dt class="check_btn iconfont icon-CheckboxDefuben">顶层</dt>
+				<dd class="check_group">
+					<dl>
+						<dt class="check_btn iconfont icon-CheckboxDefuben">二级</dt>
+						<dd class="check_group">
+							<dl>
+								<dt class="check_btn iconfont icon-CheckboxDefuben">三级</dt>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+							</dl>
+						</dd>
+						<dd class="check_group">
+							<dl>
+								<dt class="check_btn iconfont icon-CheckboxDefuben">三级</dt>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+							</dl>
+						</dd>
+					</dl>
+				</dd>
+				<dd class="check_group">
+					<dl>
+						<dt class="check_btn iconfont icon-CheckboxDefuben">二级</dt>
+						<dd class="check_group">
+							<dl>
+								<dt class="check_btn iconfont icon-CheckboxDefuben">三级</dt>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+							</dl>
+						</dd>
+						<dd class="check_group">
+							<dl>
+								<dt class="check_btn iconfont icon-CheckboxDefuben">三级</dt>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+								<dd class="check_btn iconfont icon-CheckboxDefuben">四级</dd>
+							</dl>
+						</dd>
+					</dl>
+				</dd>
+			</dl>
+		</div>
+	</textarea>
+
 	<hr>
+	<h3>按钮</h3>
 	<div>
-		<button class="red_btn right_btn">正确</button>
-		<button class="gray_btn wrong_btn">错误</button>
-		<button class="blue_btn normal_btn">透明弹框</button>
-		<button class="white_btn popups">弹层</button>
+		<button class="red_btn">红</button>
+
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+			<button class="red_btn"></button>
+		</textarea>
+
+		<button class="gray_btn">灰</button>
+
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+			<button class="gray_btn"></button>
+		</textarea>
+
+		<button class="blue_btn">蓝</button>
+
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+			<button class="blue_btn"></button>
+		</textarea>
+
+		<button class="white_btn">白</button>
+
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+			<button class="white_btn"></button>
+		</textarea>
+
 	</div>
 	<hr>
+	<h3>步进器</h3>
+
+	<span class="stepper_percent">
+		<input type="text" class="set_inp" value="0">
+		<span class="step_add"></span>
+		<span class="step_reduce"></span>
+	</span>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 8px">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<span class="stepper_percent">
+			<input type="text" class="set_inp" value="0" >
+			<span class="step_add"></span>
+			<span class="step_reduce"></span>
+		</span>
+	</textarea>
+
+	<span class="stepper_px">
+		<input type="text" class="set_inp" value="0">
+		<b class="step_add"></b>
+		<b class="step_reduce"></b>
+	</span>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 8px">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<span class="stepper_px">
+			<input type="text" class="set_inp" value="0" >
+			<b class="step_add"></b>
+			<b class="step_reduce"></b>
+		</span>
+	</textarea>
+
+	<span class="stepper_s">
+		<input type="text" class="set_inp" value="0">
+		<b class="step_add"></b>
+		<b class="step_reduce"></b>
+	</span>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 8px">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<span class="stepper_s">
+			<input type="text" class="set_inp" value="0" >
+			<b class="step_add"></b>
+			<b class="step_reduce"></b>
+		</span>
+	</textarea>
+
+	<span class="stepper" style="width:50px;">
+		<input type="text" class="set_inp" value="1">
+		<b class="step_add"></b>
+		<b class="step_reduce"></b>
+	</span>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: 8px">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<span class="stepper">
+			<input type="text" class="set_inp" value="0" >
+			<b class="step_add"></b>
+			<b class="step_reduce"></b>
+		</span>
+	</textarea>
+
+	<hr>
+	<h3>选项卡(外部调用删改类名：tab_event)</h3>
+	<div>
+		<span class="tab_event tab_card tab_left">1</span>
+		<span class="tab_event tab_card tab_between">2</span>
+		<span class="tab_event tab_card tab_between active">3</span>
+		<span class="tab_event tab_card tab_right">4</span>
+	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="vertical-align: -5px">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div>
+			<span class="tab_event tab_card tab_left">1</span>
+			<span class="tab_event tab_card tab_between">2</span>
+			<span class="tab_event tab_card tab_between active">3</span>
+			<span class="tab_event tab_card tab_right">4</span>
+		</div>
+	</textarea>
+
+
+	<hr>
+	<h3>顶部状态弹框</h3>
+
+	<button class="white_btn right_btn">正确</button>
+	<button class="white_btn wrong_btn">错误</button>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="status_remind">
+		    <span class="status_alert iconfont"></span>
+		</div>
+	</textarea>
+
+	<hr>
+	<h3>居中透明弹框</h3>
+
+	<button class="white_btn normal_btn">透明弹框</button>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="lucency_remind">
+		    <span class="lucency_alert"></span>
+		</div>
+	</textarea>
+
+	<hr>
+	<h3>蒙版</h3>
+
+	<button class="white_btn mask">蒙版</button>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10"><div class="walnut_masking"></div></textarea>
+
+	<hr>
+	<h3>状态弹层</h3>
+	<p style="margin-bottom: 5px;color:#4D71B1">说明：w.statusPopups(".ff",str);可以通过传参的方式控制不同的弹层，无参默认为".popup_box"</p>
+
+	<button class="white_btn stauts_popups">状态弹层</button>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" />
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="walnut_popup popup_box">
+			<div class="popup_header">
+				<label>温馨提示</label>
+				<a class="walnut_close popup_close iconfont icon-Close"></a>
+			</div>
+			<div class="popup_body clearfix">
+				<div class="popup_body_content iconfont icon-Tips"></div>
+				<div class="submit_btn">
+			    	<a class="walnut_reset gray_btn popup_reset fr">弃用</a>
+			    	<a class="walnut_save red_btn popup_save fr">保存更改</a>
+		    	</div>
+			</div>
+		</div>
+
+	</textarea>
+
+	<hr>
+	<h3>图库弹层</h3>
+
+	<p style="margin-bottom: 5px;color:#4D71B1">说明：w.imgPopups('.bb','.cc'); 参数分别为弹层类名和预览图类名，无参默认为".pic_module"和".img_preview";</p>
+
+	<div style="position: relative; width: 300px; height: 80px;">
+		<span class="preview" style="padding:20px 0">
+			<img class="img_preview cc" src="" alt="">
+		</span>
+		<span class="preview" style="left:114px;padding:0 20px;">
+			<img class="img_preview dd" src="" alt="">
+		</span>
+
+		<button class="white_btn img_popups" style="position: absolute;right: 0;top: 0;">左弹层</button>
+		<button class="white_btn img_popups02" style="position: absolute;right: 0;top: 50px;">右弹层</button>
+	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 0;margin-top: 5px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div>
+			<span class="preview">
+				<img class="img_preview" src="" alt="">
+			</span>
+			<button class="white_btn img_popups">左弹层</button>
+		</div>
+		<div class="walnut_popup pic_module">
+		    <div class="pic_m_header">
+		        <span href="###" class="walnut_pic_style pic_style active">官方图案</span>
+		        <span href="###" class="walnut_pic_style pic_style">我的图库</span>
+		        <span class="walnut_close pic_m_close iconfont icon-Close"></span>
+		    </div>
+		    <div class="pic_m_body">
+		        <ul class="walnut_page pic_m_page01">
+		            <li class="walnut_li img_li">
+		                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAruIIY0fAAWWybgMSU0AAB-dQBejb0ABZbh255.jpg" alt="">
+		                <div class="public_img_bottom img_bottom">
+		                    <div class="sm_masking"></div>
+		                    <span class="select_imgwrap"></span>
+		                </div>
+		            </li>
+		            <li class="walnut_li img_li">
+		                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJ1XgAraIXQ8DAASFZpn_LacAAB-dAGXZOMABIV-533.jpg" alt="">
+		                <div class="public_img_bottom img_bottom">
+		                    <div class="sm_masking"></div>
+		                    <span class="select_imgwrap"></span>
+		                </div>
+		            </li>
+		            <li class="walnut_li img_li">
+		                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsCIFj7kAALAJNOzax8AAB-dQMcgm8AAsA8639.jpg" alt="">
+		                <div class="public_img_bottom img_bottom">
+		                    <div class="sm_masking"></div>
+		                    <span class="select_imgwrap"></span>
+		                </div>
+		            </li>
+		        </ul>
+		        <div class="walnut_page pic_m_page02">
+		            <div class="pic_upload">
+		                <span>尺寸建议 120×160 像素，格式为 JPEG、JPG、PNG和GIF，大小低于 1M</span>
+		                <div id="img_file" class="file_label blue_btn">本地上传</div>
+		            </div>
+		            <div class="normal_guide">
+		                <p>点击上传图片</p>
+		                <img src="http://talk.71baomu.com/style/setting/ver07/img/new2017/load-guide02.png" alt="" />
+		            </div>
+		            <ul class="own_content">
+		                <li class="walnut_li img_li">
+		                    <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsOIczYfAAV3PpCajsoAAB-dgCdICMABXdW025.jpg" alt="">
+		                    <div class="own_img_bottom img_bottom">
+		                    	<div class="sm_masking"></div>
+		                        <span class="remove_imgwrap"></span>
+		                        <span class="select_imgwrap"></span>
+		                    </div>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		    <div class="pic_m_footer">
+		        <button class="walnut_reset pic_cancel gray_btn">取消选择</button>
+		        <button class="walnut_save pic_save red_btn">确定选择</button>
+		    </div>
+		</div>
+	</textarea>
+
+	<hr>
+	<h3>拖动排序(自行修改类)</h3>
+	<div class="clearfix" style="position: relative;">
+		<ul class="move_ul fl activation" style="height: 200px;overflow: auto;">
+			<li class="move_li"><span>11111</span><i class="move_by_me"></i></li>
+			<li class="move_li"><span>22222</span><i class="move_by_me"></i></li>
+			<li class="move_li"><span>33333</span><i class="move_by_me"></i></li>
+			<li class="move_li"><span>44444</span><i class="move_by_me"></i></li>
+			<li class="move_li"><span>55555</span><i class="move_by_me"></i></li>
+			<li class="move_li"><span>66666</span><i class="move_by_me"></i></li>
+		</ul>
+		<button class="white_btn" style="margin-top: 5px;" onclick="drag.activate();$('.move_ul').addClass('activation')">开启拖动</button>
+		<button class="white_btn" style="margin-top: 5px;" onclick="drag.disable();$('.move_ul').removeClass('activation')">禁用拖动</button>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;">
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+
+			// DOM结构
+			<ul class="move_ul activation">
+				<li class="move_li"><span>11111</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>22222</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>33333</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>44444</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>55555</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>66666</span><i class="move_by_me"></i></li>
+			</ul>
+
+			<button class="white_btn" onclick="drag.activate();$('.move_ul').addClass('activation')">开启拖动</button>
+			<button class="white_btn" onclick="drag.disable();$('.move_ul').removeClass('activation')">禁用拖动</button>
+
+			// JS部分
+			var drag = w('.move_ul').tjgSortable({
+				target:'.move_li',		//被拖动的元素--默认为下一级<li>标签;
+				touchElem:false,		//触发拖动元素--可设置为target的子元素;
+				filter:'move_by_me',	//不执行拖动元素class;
+				active:true,			//是否激活拖动;
+				callback:function(is_change){
+					console.log('is changed:',is_change,'----------callback')
+				}
+			})
+			w('.move_by_me').on('mousedown',function(e){
+				w.stopPropagate(e);
+				w.lucencyAlert("这只是一条普通的测试信息");
+			})
+		</textarea>
+	</div>
+	<hr>
+	<h3>一些demo(需要自行复制)</h3>
+	<div style="display:inline-block; width: 108px;height: 125px;background: #FFFFFF;border: 1px solid #CED5E0;border-radius: 2px; padding: 10px;"><span style=" width: 88px;height: 88px;display: block; border: 1px solid #CED5E0;"><img src="" alt="" style="width: 100%;height:100%;"></span><p style=" display:inline-block;width: 100%;opacity: 0.6;filter: alpha(opacity=60);font-size: 12px;color: #000000;letter-spacing: 0.63px;text-align: center;margin-top: 5px; ">微信扫码关注</p></div>
+
+
+	<div id="phoneAsk" style="display:inline-block;margin-left:20px;box-sizing: border-box;width: 264px;height: 70px;background: #FFF;box-shadow: 0 0 10px 0 rgba(74,144,226,0.40);border-radius: 2px;border: 1px solid #e1e4e6;padding: 11px 0 0 15px;">
+			<input type="text" id="input-phonecall" placeholder="输入手机号码" maxlength="11" style=" border-radius: 0;border: 2px solid #1798FC;width: 161px;padding-left: 8px;height: 32px; box-sizing: border-box;font-size: 14px;display: inline-block;float: left;">
+			<span id="calltome" style=" float: left;font-size: 14px;width: 72px;height: 32px;box-sizing: border-box;background: #1798FC;border-radius: 0 2px 2px 0;color: #FFFFFF;letter-spacing: -0.18px;line-height: 32px;cursor: pointer;display: inline-block;text-align:center;border: none;" onclick="w.lucencyAlert('添加功能')">给我回电</span>
+		<p id="calltip" style="margin-top: 4px;float: left;font-size: 12px;letter-spacing: 0.63px; color: #43484A;display: block" >免费电话咨询服务，请放心接听</p>
+		<p id="letter12red" style=" color: #F04134; margin-top: 4px;float: left;font-size: 12px;letter-spacing: 0.63px;display: none;">请输入正确手机号</p>
+		<div id="waittip" style=" width:100%;height:100%; position:absolute;left:0;top:0;display:none;background: #FFF;">
+			<span style="letter-spacing: 0;color: #43484A;font-size: 14px;color: #28334B;line-height: 14px;position: absolute;left: 10px;top:25px;">发送成功！请留意电话接听</span>
+			<span style="display: inline-block;font-size: 14px;color: #1F8CEB;line-height: 14px;position: absolute;right: 10px;top:25px;cursor: pointer;" onclick = ""><返回</span>
+		</div>
+	</div>
+
+
+	<hr>
+	<h3>日历插件</h3>
+	<div id="date_picker1" style="display: inline-block;width: 200px;position: relative;height: 28px;margin-top: 10px;"></div>
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		// DOM结构
+		<div id="date_picker1" style="display: inline-block;width: 200px;position: relative;height: 28px;margin-top: 10px;"></div>
+		// JS部分
+		w.datePicker({
+			id:'date_picker1',
+			format:'yyyy-mm-dd hh:mm:ss',	// 日期格式yyyy[-mm[-dd[ hh[:mm[:ss]]]]]
+			value:'2018-09-05 09:45:16',	// 初始化时间 [格式要与format一致]
+			minDate:'2018-08-15',
+			maxDate:'2018-11-11',
+			// menu_btn:['clear','today','confirm'],
+			small_size:0,			// 是否为小尺寸240px;默认280px;
+			callback:function(val){
+				console.log('----callback',val)
+			}
+		})
+	</textarea>
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;margin-left: 180px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		// DOM结构
+		<div id="date_picker2" style="display: inline-block;width: 300px;position: relative;height: 28px;margin-top: 10px;float: right;"></div>
+		// JS部分
+		w.datePicker({
+			id:'date_picker2',
+			format:'yyyy-mm-dd hh:mm:ss yyyy-mm-dd hh:mm:ss',
+			value:'2018-08-11 07:10:10 2018-09-11 17:30:00',
+			menu_btn:['clear','today','confirm'],
+			minDate:'2015-08-11',
+			maxDate:'today',
+			small_size:0,
+			callback:function(val){
+				console.log('----callback',val)
+			}
+		})
+	</textarea>
+	<div id="date_picker2" style="display: inline-block;width: 300px;position: relative;height: 28px;margin-top: 10px;float: right;"></div>
+	<hr>
+	<h3>后台头部菜单</h3>
+		<p style="margin-bottom: 5px;color:#4D71B1">父级需有类名：frame-right;a标签内###自行替换</p>
+		<div class="setting_header">
+            <h6>PC端设置</h6>
+            <ul>
+                <li><a href="###">通用设置</a></li>
+                <li><a href="###">主动发起</a></li>
+                <li><a href="###">浮动窗口</a></li>
+                <li class="pc_active">邀请框</li>
+                <li><a href="###">客服图标</a></li>
+                <li><a href="###">新窗口</a></li>
+                <li><a href="###">留言</a></li>
+            </ul>
+		</div>
+
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 0;margin-top: 5px;">
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+			<div class="setting_header">
+	            <h6>PC端设置</h6>
+	            <ul>
+	                <li><a href="###">通用设置</a></li>
+	                <li><a href="###">主动发起</a></li>
+	                <li><a href="###">浮动窗口</a></li>
+	                <li class="pc_active">邀请框</li>
+	                <li><a href="###">客服图标</a></li>
+	                <li><a href="###">新窗口</a></li>
+	                <li><a href="###">留言</a></li>
+	            </ul>
+			</div>
+		</textarea>
+
+	<hr>
+	<h3>表单验证类</h3>
+	<span class="statu_bubble01"></span>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 10px;vertical-align: 7px; ">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10"><span class="statu_bubble01"></span></textarea>
+
+
+	<hr>
+	<h3>后台字体图标(双击图标获取类名)</h3>
+	<div class="icons clearfix">
+	<p style="margin-bottom: 5px;margin-left:10px;color:#4D71B1">需引入css文件：/walnutui/font/font_kfxt/iconfont.css</p>
+		<label class="icon iconfont icon-xiaoxi">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-xiaoxi</textarea>
+		</label>
+		<label class="icon iconfont icon-liuyan">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-liuyan</textarea>
+		</label>
+		<label class="icon iconfont icon-Mobilephonemodel">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Mobilephonemodel</textarea>
+		</label>
+		<label class="icon iconfont icon-Mobilephonemodel1">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Mobilephonemodel1</textarea>
+		</label>
+		<label class="icon iconfont icon-Mobilephonemodel2">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Mobilephonemodel2</textarea>
+		</label>
+		<label class="icon iconfont icon-Mobilephonemodel3">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Mobilephonemodel3</textarea>
+		</label>
+		<label class="icon iconfont icon-Mobilephonemodel4">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Mobilephonemodel4</textarea>
+		</label>
+		<label class="icon iconfont icon-RadioDefault">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-RadioDefault</textarea>
+		</label>
+		<label class="icon iconfont icon-CheckboxDefuben">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-CheckboxDefuben</textarea>
+		</label>
+		<label class="icon iconfont icon-CheckboxSeleted">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-CheckboxSeleted</textarea>
+		</label>
+		<label class="icon iconfont icon-Close">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Close</textarea>
+		</label>
+		<label class="icon iconfont icon-Setup">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Setup</textarea>
+		</label>
+		<label class="icon iconfont icon-Delete">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Delete</textarea>
+		</label>
+		<label class="icon iconfont icon-TipsError">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-TipsError</textarea>
+		</label>
+		<label class="icon iconfont icon-Edit">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Edit</textarea>
+		</label>
+		<label class="icon iconfont icon-TipsSuccessful">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-TipsSuccessful</textarea>
+		</label>
+		<label class="icon iconfont icon-RadioSelected">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-RadioSelected</textarea>
+		</label>
+		<label class="icon iconfont icon-Tips">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Tips</textarea>
+		</label>
+		<label class="icon iconfont icon-Drag1">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Drag1</textarea>
+		</label>
+		<label class="icon iconfont icon-Drag">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Drag</textarea>
+		</label>
+		<label class="icon iconfont icon-PopupError">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-PopupError</textarea>
+		</label>
+		<label class="icon iconfont icon-PopupSuccess">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-PopupSuccess</textarea>
+		</label>
+		<label class="icon iconfont icon-PopupWarning">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-PopupWarning</textarea>
+		</label>
+		<label class="icon iconfont icon-Date">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Date</textarea>
+		</label>
+		<label class="icon iconfont icon-Visitorscard">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Visitorscard</textarea>
+		</label>
+		<label class="icon iconfont icon-Addcard">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Addcard</textarea>
+		</label>
+		<label class="icon iconfont icon-shuxiang">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-shuxiang</textarea>
+		</label>
+		<label class="icon iconfont icon-yuanxing">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-yuanxing</textarea>
+		</label>
+		<label class="icon iconfont icon-wenbenban">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-wenbenban</textarea>
+		</label>
+		<label class="icon iconfont icon-tuwenban">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-tuwenban</textarea>
+		</label>
+		<label class="icon iconfont icon-tupian">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-tupian</textarea>
+		</label>
+		<label class="icon iconfont icon-zidingyiban">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zidingyiban</textarea>
+		</label>
+		<label class="icon iconfont icon-liebiao">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-liebiao</textarea>
+		</label>
+		<label class="icon iconfont icon-caidan">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-caidan</textarea>
+		</label>
+		<label class="icon iconfont icon-yidongtubiaoxiaoyuanxing">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-yidongtubiaoxiaoyuanxing</textarea>
+		</label>
+		<label class="icon iconfont icon-yidongtubiaodayuanxing">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-yidongtubiaodayuanxing</textarea>
+		</label>
+		<label class="icon iconfont icon-fangkeguanli">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-fangkeguanli</textarea>
+		</label>
+		<label class="icon iconfont icon-lishijilu">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-lishijilu</textarea>
+		</label>
+		<label class="icon iconfont icon-shujufenxi">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-shujufenxi</textarea>
+		</label>
+		<label class="icon iconfont icon-changyongyu">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-changyongyu</textarea>
+		</label>
+		<label class="icon iconfont icon-zhinengjiqiren">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhinengjiqiren</textarea>
+		</label>
+		<label class="icon iconfont icon-fenggeshezhi">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-fenggeshezhi</textarea>
+		</label>
+		<label class="icon iconfont icon-gongnengkuozhan">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-gongnengkuozhan</textarea>
+		</label>
+		<label class="icon iconfont icon-caozuorizhi">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-caozuorizhi</textarea>
+		</label>
+		<label class="icon iconfont icon-xitongshezhi">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-xitongshezhi</textarea>
+		</label>
+		<label class="icon iconfont icon-zhankaishouna">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhankaishouna</textarea>
+		</label>
+		<label class="icon iconfont icon-yijicaidanshounazhankai">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-yijicaidanshounazhankai</textarea>
+		</label>
+		<label class="icon iconfont icon-zhuanshukefu-jianyi">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhuanshukefu-jianyi</textarea>
+		</label>
+		<label class="icon iconfont icon-zhuanshukefu-guhua">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhuanshukefu-guhua</textarea>
+		</label>
+		<label class="icon iconfont icon-zhuanshukefu-kefu">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhuanshukefu-kefu</textarea>
+		</label>
+		<label class="icon iconfont icon-zhuanshukefu-shouji">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhuanshukefu-shouji</textarea>
+		</label>
+		<label class="icon iconfont icon-zhuanshukefu-QQ">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhuanshukefu-QQ</textarea>
+		</label>
+		<label class="icon iconfont icon-wangyebeijingzuixiaohua">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-wangyebeijingzuixiaohua</textarea>
+		</label>
+		<label class="icon iconfont icon-wangyebeijingguanbi">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-wangyebeijingguanbi</textarea>
+		</label>
+		<label class="icon iconfont icon-wangyebeijingzuidahua">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-wangyebeijingzuidahua</textarea>
+		</label>
+		<label class="icon iconfont icon-Customerservice">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Customerservice</textarea>
+		</label>
+		<label class="icon iconfont icon-iPhone">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-iPhone</textarea>
+		</label>
+		<label class="icon iconfont icon-QR">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-QR</textarea>
+		</label>
+		<label class="icon iconfont icon-QQ">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-QQ</textarea>
+		</label>
+		<label class="icon iconfont icon-weibo">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-weibo</textarea>
+		</label>
+		<label class="icon iconfont icon-xianghou">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-xianghou</textarea>
+		</label>
+		<label class="icon iconfont icon-zuihou">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zuihou</textarea>
+		</label>
+		<label class="icon iconfont icon-xiangqian">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-xiangqian</textarea>
+		</label>
+		<label class="icon iconfont icon-zuiqian">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zuiqian</textarea>
+		</label>
+
+	</div>
+
+	<hr>
+	<h3>访客端字体图标(双击图标获取类名)</h3>
+	<div class="icons clearfix">
+		<p style="margin-bottom: 5px;margin-left:10px;color:#4D71B1">需引入css文件：/walnutui/font/font_fkd/iconfont.css</p>
+		<label class="icon iconfont icon-SendFiles">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-SendFiles</textarea>
+		</label>
+		<label class="icon iconfont icon-Download">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Download</textarea>
+		</label>
+		<label class="icon iconfont icon-Score">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Score</textarea>
+		</label>
+		<label class="icon iconfont icon-FAQ">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-FAQ</textarea>
+		</label>
+		<label class="icon iconfont icon-Screenshot">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Screenshot</textarea>
+		</label>
+		<label class="icon iconfont icon-Emotion">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Emotion</textarea>
+		</label>
+		<label class="icon iconfont icon-people">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-people</textarea>
+		</label>
+		<label class="icon iconfont icon-Message">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Message</textarea>
+		</label>
+		<label class="icon iconfont icon-lixianliuyan">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-lixianliuyan</textarea>
+		</label>
+		<label class="icon iconfont icon-zaixianqipao">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zaixianqipao</textarea>
+		</label>
+		<label class="icon iconfont icon-zhankai">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhankai</textarea>
+		</label>
+		<label class="icon iconfont icon-WeChatQR">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-WeChatQR</textarea>
+		</label>
+		<label class="icon iconfont icon-Emotion1">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Emotion1</textarea>
+		</label>
+		<label class="icon iconfont icon-moreselect">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-moreselect</textarea>
+		</label>
+		<label class="icon iconfont icon-More">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-More</textarea>
+		</label>
+		<label class="icon iconfont icon-Emotionselect">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Emotionselect</textarea>
+		</label>
+		<label class="icon iconfont icon-Customerservice1">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Customerservice1</textarea>
+		</label>
+		<label class="icon iconfont icon-Message1">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Message1</textarea>
+		</label>
+		<label class="icon iconfont icon-Mini">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Mini</textarea>
+		</label>
+		<label class="icon iconfont icon-Back">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Back</textarea>
+		</label>
+		<label class="icon iconfont icon-img">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-img</textarea>
+		</label>
+		<label class="icon iconfont icon-file">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-file</textarea>
+		</label>
+		<label class="icon iconfont icon-evaluate">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-evaluate</textarea>
+		</label>
+		<label class="icon iconfont icon-end">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-end</textarea>
+		</label>
+		<label class="icon iconfont icon-Dielike">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Dielike</textarea>
+		</label>
+		<label class="icon iconfont icon-Like1">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Like1</textarea>
+		</label>
+		<label class="icon iconfont icon-StarSelect">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-StarSelect</textarea>
+		</label>
+		<label class="icon iconfont icon-Star">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Star</textarea>
+		</label>
+		<label class="icon iconfont icon-radio">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-radio</textarea>
+		</label>
+		<label class="icon iconfont icon-radioselected">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-radioselected</textarea>
+		</label>
+		<label class="icon iconfont icon-max">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-max</textarea>
+		</label>
+		<label class="icon iconfont icon-mini">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-mini</textarea>
+		</label>
+		<label class="icon iconfont icon-Messagesuccess">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Messagesuccess</textarea>
+		</label>
+		<label class="icon iconfont icon-Customerservice">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-Customerservice</textarea>
+		</label>
+		<label class="icon iconfont icon-iPhone">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-iPhone</textarea>
+		</label>
+		<label class="icon iconfont icon-QQ">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-QQ</textarea>
+		</label>
+		<label class="icon iconfont icon-QR">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-QR</textarea>
+		</label>
+		<label class="icon iconfont icon-weibo">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-weibo</textarea>
+		</label>
+
+
+	</div>
+	<!-- 弹框 -->
 	<div class="lucency_remind">
 	    <span class="lucency_alert"></span>
 	</div>
@@ -160,45 +1292,158 @@
 	    <span class="status_alert iconfont"></span>
 	</div>
 
-	<span class="stepper_percent">
-		<input type="text" class="set_inp" value="0">
-		<span class="step_add"></span>
-		<span class="step_reduce"></span>
-	</span>	
-	<span class="stepper_px">
-		<input type="text" class="set_inp" value="0">
-		<b class="step_add"></b>
-		<b class="step_reduce"></b>
-	</span>	
-	<hr>
+	<!-- 蒙版 -->
+	<div class="walnut_masking">
+		<button class="red_btn mask_close" style=" position: fixed;top: 50%;left: 50%;margin:-14px 0 0 -40px;">点击关闭</button>
+	</div>
 
-	<div class="masking"></div>
-	<div class="popup_box">
+	<!-- 状态弹层 -->
+	<div class="walnut_popup popup_box ee">
 		<div class="popup_header">
 			<label>温馨提示</label>
-			<a class="popup_close iconfont icon-Close"></a>
+			<a class="walnut_close popup_close iconfont icon-Close"></a>
 		</div>
 		<div class="popup_body clearfix">
 			<div class="popup_body_content iconfont icon-Tips"></div>
 			<div class="submit_btn">
-		    	<a class="gray_btn popup_reset fr">弃用</a>
-		    	<a class="red_btn popup_save fr">保存更改</a>
+		    	<a class="walnut_reset gray_btn popup_reset fr">弃用</a>
+		    	<a class="walnut_save red_btn popup_save fr">保存更改</a>
 	    	</div>
 		</div>
 	</div>
-	<div>
-		<span class="tab_card tab_left">1</span>
-		<span class="tab_card tab_between">2</span>
-		<span class="tab_card tab_between">3</span>
-		<span class="tab_card tab_right">4</span>
+	<div class="walnut_popup popup_box ff">
+		<div class="popup_header">
+			<label>温馨提示</label>
+			<a class="walnut_close popup_close iconfont icon-Close"></a>
+		</div>
+		<div class="popup_body clearfix">
+			<div class="popup_body_content iconfont icon-Tips"></div>
+			<div class="submit_btn">
+		    	<a class="walnut_reset gray_btn popup_reset fr">弃用</a>
+		    	<a class="walnut_save red_btn popup_save fr">保存更改</a>
+	    	</div>
+		</div>
 	</div>
 
-<script>
-	// 开关
-	$("#switchBtn").click(function(){
-		w.switchBtn(this,"is_off")
-	})
+	<!-- 图库弹层 -->
+	<div class="walnut_popup pic_module bb">
+	    <div class="pic_m_header">
+	        <span href="###" class="walnut_pic_style pic_style active">官方图案</span>
+	        <span href="###" class="walnut_pic_style pic_style">我的图库</span>
+	        <span class="walnut_close pic_m_close iconfont icon-Close"></span>
+	    </div>
+	    <div class="pic_m_body">
+	        <ul class="walnut_page pic_m_page01">
+	            <li class="walnut_li img_li">
+	                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAruIIY0fAAWWybgMSU0AAB-dQBejb0ABZbh255.jpg" alt="">
+	                <div class="public_img_bottom img_bottom">
+	                    <div class="sm_masking"></div>
+	                    <span class="select_imgwrap"></span>
+	                </div>
+	            </li>
+	            <li class="walnut_li img_li">
+	                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJ1XgAraIXQ8DAASFZpn_LacAAB-dAGXZOMABIV-533.jpg" alt="">
+	                <div class="public_img_bottom img_bottom">
+	                    <div class="sm_masking"></div>
+	                    <span class="select_imgwrap"></span>
+	                </div>
+	            </li>
+	            <li class="walnut_li img_li">
+	                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsCIFj7kAALAJNOzax8AAB-dQMcgm8AAsA8639.jpg" alt="">
+	                <div class="public_img_bottom img_bottom">
+	                    <div class="sm_masking"></div>
+	                    <span class="select_imgwrap"></span>
+	                </div>
+	            </li>
+	        </ul>
+	        <div class="walnut_page pic_m_page02">
+	            <div class="pic_upload">
+	                <span>尺寸建议 120×160 像素，格式为 JPEG、JPG、PNG和GIF，大小低于 1M</span>
+	                <div id="img_file" class="file_label blue_btn">本地上传</div>
+	            </div>
+	            <div class="normal_guide">
+	                <p>点击上传图片</p>
+	                <img src="http://talk.71baomu.com/style/setting/ver07/img/new2017/load-guide02.png" alt="" />
+	            </div>
+	            <ul class="own_content">
+	                <li class="walnut_li img_li">
+	                    <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsOIczYfAAV3PpCajsoAAB-dgCdICMABXdW025.jpg" alt="">
+	                    <div class="own_img_bottom img_bottom">
+	                    	<div class="sm_masking"></div>
+	                        <span class="remove_imgwrap"></span>
+	                        <span class="select_imgwrap"></span>
+	                    </div>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	    <div class="pic_m_footer">
+	        <button class="walnut_reset pic_cancel gray_btn">取消选择</button>
+	        <button class="walnut_save pic_save red_btn">确定选择</button>
+	    </div>
+	</div>
 
+
+	<div class="walnut_popup pic_module aa">
+	    <div class="pic_m_header">
+	        <span href="###" class="walnut_pic_style pic_style active">官方图案</span>
+	        <span href="###" class="walnut_pic_style pic_style">我的图库</span>
+	        <span class="walnut_close pic_m_close iconfont icon-Close"></span>
+	    </div>
+	    <div class="pic_m_body">
+	        <ul class="walnut_page pic_m_page01">
+	            <li class="walnut_li img_li">
+	                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAriIEHJqAAYMR-M8FlIAAB-dAMgXQQABgxf570.jpg" alt="">
+	                <div class="public_img_bottom img_bottom">
+	                    <div class="sm_masking"></div>
+	                    <span class="select_imgwrap"></span>
+	                </div>
+	            </li>
+	            <li class="walnut_li img_li">
+	                <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJ1XgAraIXQ8DAASFZpn_LacAAB-dAGXZOMABIV-533.jpg" alt="">
+	                <div class="public_img_bottom img_bottom">
+	                    <div class="sm_masking"></div>
+	                    <span class="select_imgwrap"></span>
+	                </div>
+	            </li>
+	            <li class="walnut_li img_li">
+	                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535688587128&di=63a10f218b81613dc40f0d83cd5cfd25&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F8cb1cb1349540923bb1c60dd9758d109b3de491f.jpg" alt="">
+	                <div class="public_img_bottom img_bottom">
+	                    <div class="sm_masking"></div>
+	                    <span class="select_imgwrap"></span>
+	                </div>
+	            </li>
+	        </ul>
+	        <div class="walnut_page pic_m_page02">
+	            <div class="pic_upload">
+	                <span>尺寸建议 120×160 像素，格式为 JPEG、JPG、PNG和GIF，大小低于 1M</span>
+	                <div id="img_file" class="file_label blue_btn">本地上传</div>
+	            </div>
+	            <div class="normal_guide">
+	                <p>点击上传图片</p>
+	                <img src="http://talk.71baomu.com/style/setting/ver07/img/new2017/load-guide02.png" alt="" />
+	            </div>
+	            <ul class="own_content">
+	                <li class="walnut_li img_li">
+	                    <img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJ1XgAr-IBn-7AAPyLZIZ3H0AAB-dQIr858AA_JF976.jpg" alt="">
+	                    <div class="own_img_bottom img_bottom">
+	                    	<div class="sm_masking"></div>
+	                        <span class="remove_imgwrap"></span>
+	                        <span class="select_imgwrap"></span>
+	                    </div>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	    <div class="pic_m_footer">
+	        <button class="walnut_reset pic_cancel gray_btn">取消选择</button>
+	        <button class="walnut_save pic_save red_btn">确定选择</button>
+	    </div>
+	</div>
+
+</div>
+
+<script>
 	//步进器
 	$(".stepper_percent").on("click",".step_add",function(){
 		w.changeNum(this,5);
@@ -212,12 +1457,20 @@
 	$(".stepper_px").on("click",".step_reduce",function(){
 		w.changeNum(this,-10);
 	})
+	$(".stepper_s").on("click",".step_add",function(){
+		w.changeNum(this,10);
+	})
+	$(".stepper_s").on("click",".step_reduce",function(){
+		w.changeNum(this,-10);
+	})
+	$(".stepper").on("click",".step_add",function(){
+		w.changeNum(this,1,1,99);
+	})
+	$(".stepper").on("click",".step_reduce",function(){
+		w.changeNum(this,-1,1,99);
+	})
 	$(".set_inp").on("keyup",function(){
 		w.inputKeyup(this);
-	})
-	//单选
-	$(".radio_btn").on("click",function(){
-		w.singleSelect(this,"icon-RadioSelected")
 	})
 	// 多选(老的)
 	$(".old_check").on("click",".check_btn",function(){
@@ -235,26 +1488,76 @@
 	})
 	//去蓝块
 	w.removeBlue();
-	//下拉菜单（不完善）
+	//下拉菜单
 	$(".select_box").click(function(){
 		w.dropDown(this);
 	})
 	$(".select_box").on("click",".select_list > li",function(){
 		w.linsenLi(this);
 	})
-	//弹层
-	$(".popups").click(function(){
-		w.popups();
-	})
-	$(".tab_card").on("click",function(){
-		w.singleSelect(this)
-	})
 	//多选（可多级列表）
 	$(".checkAll").on("click",".check_btn",function(){
 		w.switchBtn(this,'icon-CheckboxSeleted');
 		w.multiSelect(this);
 	})
+	//状态弹层
+	$(".stauts_popups").click(function(){
+		w.statusPopups(".ff");
+	})
+	//图库弹层
+	$(".img_popups").click(function(){
+		w.imgPopups('.bb','.cc');
+	})
+	$(".img_popups02").click(function(){
+		w.imgPopups('.aa','.dd');
+	})
+	$(".mask").click(function(){
+		$(".walnut_masking").show();
+	})
+	$(".mask_close").click(function(){
+		$(".walnut_masking").hide();
+	})
+
+	// 插件-拖动排序
+	var drag = w('.move_ul').tjgSortable({
+		target:'.move_li',		//被拖动的元素--默认为下一级<li>标签;
+		touchElem:false,		//触发拖动元素--可设置为target的子元素;
+		filter:'move_by_me',	//不执行拖动元素class;
+		active:true,			//是否激活拖动;
+		callback:function(is_change){
+			console.log('is changed:',is_change,'----------callback')
+		}
+	})
+	w(document).on('mousedown','.move_by_me',function(e){
+		w.lucencyAlert("这只是一条普通的测试信息");
+	})
+	// 插件-日期选择器
+	var date1 = w.datePicker({
+		id:'date_picker1',
+		format:'yyyy-mm-dd hh:mm:ss',	// 日期格式yyyy[-mm[-dd[ hh[:mm[:ss]]]]]
+		value:'2018-09',	// 初始化时间 [格式要与format一致]
+		minDate:'2018-08-15',
+		maxDate:'2022-11-11',
+		// menu_btn:['clear','today','confirm'],
+		small_size:0,			// 是否为小尺寸240px;默认280px;
+		callback:function(val){
+			console.log('----callback',val)
+		}
+	})
+	var date2 = w.datePicker({
+		id:'date_picker2',
+		format:'yyyy-mm-dd hh:mm:ss yyyy-mm-dd hh:mm:ss',
+		value:'2018-08-11 07:10:10 2018-09-11 17:30:00',
+		menu_btn:['clear','today','confirm'],
+		minDate:'2015-08-11',
+		maxDate:'today',
+		small_size:0,
+		callback:function(val){
+			console.log('----callback',val)
+		}
+	})
 </script>
+
 </body>
 
 </html>

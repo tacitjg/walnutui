@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <polygon id="合并形状-a" points="12.899 6.414 6.536 12.778 3 9.243 4.414 7.828 6.536 9.95 11.485 5"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <rect width="16" height="16" fill="#3B99FC" rx="8"/>
+    <use fill="#FFF" xlink:href="#合并形状-a"/>
+    <path stroke="#FFF" d="M12.1923882,6.41421356 L11.4852814,5.70710678 L6.53553391,10.6568542 L4.41421356,8.53553391 L3.70710678,9.24264069 L6.53553391,12.0710678 L12.1923882,6.41421356 Z"/>
+  </g>
+</svg>
