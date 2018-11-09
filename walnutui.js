@@ -268,37 +268,21 @@
 			return this;
 		},
 		animate: function(css, time ,callback){
-			this.each(function(){
-				var _this = this;
-				var css_temp = {};
-				var step = {};
+			this.each(function(idx){
+				var elem = this, css_begin = {};
 				for(var i in css){
-					if (css[i].indexOf('px') > -1) {
-						var style = parseInt(Walnut.getStyle(this,i));
-						css_temp[i] = style;
-						step[i] = [(parseInt(css[i])-style)*16/time, parseInt(css[i])];
-					}else{
-						w(this).css(i,css[i]);
-					}
+					var style = w.getStyle(this,i), num = parseFloat(style);
+					if(!num&&num!==0) continue;
+					css_begin[i] = {
+						num: num,
+						unit: style ? style.replace(/[-\d\.]*/g,'') : '',
+						range: parseFloat(css[i]) - num
+					};
 				}
-				var t = 0;
-				var timer = setInterval(function(){
-					for(var i in css_temp){
-						css_temp[i] = parseInt(css_temp[i]) + step[i][0];
-						if (css_temp[i]>step[i][1]&&step[i][0]>0 || css_temp[i]<step[i][1]&&step[i][0]<0) {
-							css_temp[i] = step[i][1];
-						}
-						css_temp[i] += 'px';
-					}
-					w(_this).css(css_temp);
-					t += 16;
-					if (t>time){
-						clearInterval(timer);
-						w(_this).css(css);
-						if(callback) callback.call(_this);
-					}
-				},16)
+				console.log(css_begin,css)
+				w.animateGo(elem,css,css_begin,time,callback);
 			})
+			return this;
 		},
 		scrollTop: function(to,speed){
 			to = Number(to)>0 ? Number(to) : 0;
@@ -319,21 +303,6 @@
 					},16)
 				}
 			})
-		},
-		slideUp:function(s){
-			var _this  = this;
-			if(!s) var s = 400;
-			var h = this.css("height");
-			this.animate({"height":"0px"},s,function(){
-				_this.css({"height":h,"display":"none"})
-			});
-		},
-		slideDown:function(s){
-			if(!s) var s = 400;
-			var h = this.css("height");
-			this.css({"height":"0px","display":"block"})
-			this.animate({"height":h},s,function(){
-			});
 		},
 		offset: function(){
 			var top = 0,
@@ -368,22 +337,163 @@
 		}else if (typeof selector === "function") {
 			Walnut.addEvent(window,'load',selector);
 		}else if (selector.nodeType) {
+			// if (!selector.walnut_mark) selector.walnut_mark = expando++;
 			this[0] = selector;
 			this.length = 1;
 			return this;
 		}
 	};
+	init.prototype = Walnut.fn;
+	window.w = window.walnut = Walnut;
+
+	// 生成Walnut实例
+	Walnut.makeWalnut = function(arr,needfilter){
+		var idx = 0;
+		for(var i = 0 ,len = arr.length; i<len; i++){
+			if (!needfilter || arr[i] && !w.contains(this, arr[i])) {
+				this[idx] = arr[i];
+				// if (!(arr[i].walnut_mark)) {
+				// 	arr[i].walnut_mark = ++expando+'';
+				// 	Walnut.cache[expando] = {};
+				// }
+				this.length = ++idx;
+			}
+		}
+		return this;
+	}
+	// 获取数据类型
+	Walnut.getType = function(obj) {
+		if ( obj == null ) return obj + "";
+		try{
+			return typeof obj === "object" || typeof obj === "function" ? w_typeof[ toString.call(obj) ] || "object" : typeof obj;
+		}catch(e){
+			return obj.join ? 'array' : typeof obj;
+		}
+	}
+	Walnut.each = function(obj,callback){
+		var len = obj.length;
+		if (Walnut.getType( obj ) == 'array') {
+			for (var i = 0 ; i < len; i++ ) {
+				var value = callback.call(obj[i], i, obj[i]);
+				if (value===false) break;
+			}
+		} else {
+			for ( i in obj ) {
+				var value = callback.call(obj[i], i, obj[i]);
+				if (value===false) break;
+			}
+		}
+		return obj;
+	}
 	// 存放私有方法
 	var fn_gather = {};
+	var expando = 0;
+	Walnut.cache = {};
+	var w_typeof = {};
+	Walnut.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
+		w_typeof["[object "+name+"]"] = name.toLowerCase();
+	})
+	Walnut.each({
+		slideDown: "show",
+		slideUp: "hide",
+		slideToggle: "toggle",
+		fadeIn: "show",
+		fadeOut: "hide",
+		fadeToggle: "toggle"
+	}, function( name, props ) {
+		Walnut.fn[ name ] = function(ms) {
+			this.each(function(){
+				var do_show = w.getStyle(this,'display')=='none';
+				if (do_show&&props=='hide' || !do_show&&props=='show') return;
+				var type = name.slice(0,4);
+				if (type=='fade') {
+					ms = ms || 333;
+					var cssData = {'opacity':this.style['opacity']};
+					var cssGoto = {'opacity': do_show ? 1 : 0};
+					if (do_show){
+						this.style['opacity'] = '0';
+						this.style.filter = 'alpha(opacity=0)';
+					}else{
+						this.style['opacity'] = '1';
+						this.style.filter = 'alpha(opacity=100)';
+					}
+				}else{
+					ms = ms || 222;
+					var cssData = {
+						'height': this.style['height'],
+						'overflow': this.style['overflow'],
+						'margin-top': this.style['margin-top'],
+						'margin-bottom': this.style['margin-bottom'],
+						'padding-top': this.style['padding-top'],
+						'padding-bottom': this.style['padding-bottom']
+					}
+				}
+				this.style['overflow'] = 'hidden';
+				this.style['display'] = '';
+				if (w.getStyle(this,'display')=='none') {
+					this.style.display = "block";
+				}
+				if (type=='slid'){
+					var cssGoto = {
+						'height': do_show ? w.getStyle(this,'height') : '0px',
+						'margin-top': do_show ? w.getStyle(this,'margin-top') : '0px',
+						'margin-bottom': do_show ? w.getStyle(this,'margin-bottom') : '0px',
+						'padding-top': do_show ? w.getStyle(this,'padding-top') : '0px',
+						'padding-bottom': do_show ? w.getStyle(this,'padding-bottom') : '0px'
+					}
+				}
+				var css_begin = {};
+				if (do_show && type=='slid') {
+					this.style['height'] = '0px';
+					for(var i in cssGoto){
+						css_begin[i] = {
+							num: 0,
+							unit: 'px',
+							range: parseFloat(cssGoto[i])
+						};
+					}
+				}else{
+					for(var i in cssGoto){
+						var style = w.getStyle(this,i), num = parseFloat(style);
+						if((!num && num!==0) || (!do_show&&num===0)) continue;
+						var range_end = do_show ? 1 : 0;
+						css_begin[i] = {
+							num: num,
+							unit: style ? style.replace(/[-\d\.]*/g,'') : '',
+							range: range_end-num
+						};
+					}
+				}
+				w.animateGo(this,cssGoto,css_begin,ms,function(){
+					for(var i in cssData){
+						if (!do_show) this.style.display = "none";
+						this.style[i] = cssData[i]||'';
+					}
+				})
+			})
+		};
+	});
+	/*function setCache(key,obj){
+		var cacheData = w.cache[key];
+		for(var i in obj){
+			w.cache[key][i] = obj[i];
+		}
+	}
+	function fetchCache(elem,arr){
+		var cacheData = w.cache[elem.walnut_mark];
+		for(var i=0; i<arr.length; i++){
+			elem.style[arr[i]] = cacheData[arr[i]]||'';
+		}
+	}*/
 	// 给元素添加事件
 	Walnut.addEvent = function(obj,etype,fn,selector){
 		var type = etype.split('.');
 		var func = selector ? function(event){
 			var elem = event.srcElement ? event.srcElement : event.target;
 			var pElem = w(elem).parents(selector);
-			if (w.isEqual(elem,selector)){
+			if (Walnut.isEqual(elem,selector)){
 				fn.call(elem, event);
-			}else if (pElem.length && w.contains(obj.querySelectorAll(selector),pElem[0])) {
+			}else if (pElem.length && Walnut.contains(obj.querySelectorAll(selector),pElem[0])) {
 				fn.call(pElem[0], event);
 			}
 		} : function(event){
@@ -394,7 +504,7 @@
 			fn_gather[type[1]][type[0]] = func;
 			etype = type[0];
 		}
-		if (etype==='mousewheel' && w.broswerType==="火狐"){
+		if (etype==='mousewheel' && Walnut.broswerType==="火狐"){
 			etype='DOMMouseScroll';
 		}
 		if(obj.addEventListener){
@@ -413,7 +523,46 @@
 	}
 	// 获取元素样式
 	Walnut.getStyle = function(obj,attr) {
-		return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+		if (window.getComputedStyle) {
+			if (obj.ownerDocument.defaultView.opener) {
+				var style = obj.ownerDocument.defaultView.getComputedStyle(obj,null);
+			}else{
+				var style = window.getComputedStyle(obj,null);
+			}
+		}else{
+			var style = obj.currentStyle;
+		}
+		return attr ? style[attr] : style;
+	}
+
+	Walnut.animateGo = function(elem,cssGoto,css_begin,time,callback){
+		var start=0;
+		var act = function(timestamp){
+			if (!start) start = timestamp;
+			var progress = timestamp - start;
+			if (time>0 && progress < time) {
+				// console.log(progress,'---progress')
+				for(var i in css_begin){
+					if (css_begin[i].range) {
+						var value = css_begin[i].num + (progress/time)*css_begin[i].range;
+						elem.style[i] = value + css_begin[i].unit;
+						if (i=='opacity') {
+							elem.style.filter = 'alpha(opacity='+value*100+')';
+						}
+					}
+				}
+				requestAnimationFrame(act);
+			}else {
+				for(var i in css_begin){
+					elem.style[i] = cssGoto[i];
+					if (i=='opacity') {
+						elem.style.filter = 'alpha(opacity='+cssGoto[i]*100+')';
+					}
+				}
+				if (callback) callback.call(elem);
+			}
+		}
+		requestAnimationFrame(act);
 	}
 	// 判断obj元素是否符合selector选择器
 	Walnut.isEqual = function(obj,selector) {
@@ -425,8 +574,6 @@
 			}
 		}
 		return false;
-		// var type = selector.charAt(0);
-		// return type==='#' && "#"+obj.id===selector || type==='.' && w(obj).hasClass(selector.substring(1)) || obj.tagName.toLowerCase() === selector;
 	}
 	// 判断arr是否存在ele元素
 	Walnut.contains = function(arr,ele){
@@ -435,17 +582,6 @@
 				return true;
 			}
 		}
-	}
-	// 生成Walnut实例
-	Walnut.makeWalnut = function(arr,needfilter){
-		var idx = 0;
-		for(var i = 0 ,len = arr.length; i<len; i++){
-			if (!needfilter || arr[i] && !w.contains(this, arr[i])) {
-				this[idx] = arr[i];
-				this.length = ++idx;
-			}
-		}
-		return this;
 	}
 	Walnut.stopPropagate = function(event){
 		var e = event || window.event;
@@ -870,10 +1006,6 @@
 	Walnut.device = Walnut.device();
 	Walnut.screendeg = Walnut.screenRotate();
 
-
-
-	init.prototype = Walnut.fn;
-	window.w = window.walnut = Walnut;
 
 	//方法事件绑定
 	w(function(){
@@ -1791,5 +1923,28 @@
 			return A;
 		};
 	}
+	!function() {
+		var lastTime = 0;
+		var vendors = ['webkit', 'moz'];
+		for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+			window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+			window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+		}
+		if (!window.requestAnimationFrame){
+			window.requestAnimationFrame = function(callback, element) {
+				var currTime = new Date().getTime();
+				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+				  timeToCall);
+				lastTime = currTime + timeToCall;
+				return id;
+			};
+		}
+		if (!window.cancelAnimationFrame){
+			window.cancelAnimationFrame = function(id) {
+				clearTimeout(id);
+			};
+		}
+	}();
 
 })(window);
