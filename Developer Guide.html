@@ -759,6 +759,38 @@
 	</textarea>
 
 	<hr>
+	<h3>time-picker（时和分）</h3>
+	<div class="time_select" style="display: inline-block;">
+		<div class="set_time">
+			<input placeholder="请选择时间" onfocus=this.blur()>
+			<i class="iconfont icon-shijian"></i>
+			<div class="time_select_box">
+				<ul class="time_hours">
+				</ul>
+				<ul class="time_mins">
+				</ul>
+			</div>
+		</div>
+	</div>
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="time_select">
+			<div class="set_time">
+				<input placeholder="请选择时间" onfocus=this.blur()>
+				<i class="iconfont icon-shijian"></i>
+				<div class="time_select_box">
+					<ul class="time_hours">
+					</ul>
+					<ul class="time_mins">
+					</ul>
+				</div>
+			</div>
+		</div>
+		// JS部分
+		w.timePicker(".time_select");
+	</textarea>
+
+	<hr>
 	<h3>拖动排序(自行修改类)</h3>
 	<div class="clearfix" style="position: relative;">
 		<ul class="move_ul fl activation" style="height: 200px;overflow: auto;">
@@ -860,6 +892,24 @@
 		})
 	</textarea>
 	<div id="date_picker2" style="display: inline-block;width: 300px;position: relative;height: 28px;margin-top: 10px;float: right;"></div>
+
+	
+
+	<hr>
+	<h3>私人定制</h3>
+
+	<div class="customize" style="display: inline-block;">
+		<i class="iconfont icon-Tips"></i>	
+        客服图标支持定制版本，<span class="alink" onclick="chat()">联系专属客服咨询详情</span>
+    </div>
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div class="customize">
+			<i class="iconfont icon-Tips"></i>	
+	        客服图标支持定制版本，<span class="alink" onclick="chat()">联系专属客服咨询详情</span>
+	    </div>
+	</textarea>
+
 	<hr>
 	<h3>后台标题栏</h3>
 		<p style="height:10px"></p>
@@ -879,7 +929,7 @@
 				<li><a href="###">通用设置</a></li>
 				<li><a href="###">主动发起</a></li>
 				<li><a href="###">浮动窗口</a></li>
-				<li class="pc_active">邀请框</li>
+				<li class="active">邀请框</li>
 				<li class="disabled"><a href="###">客服图标</a></li>
 				<li><a href="###">新窗口</a></li>
 				<li class="disabled"><a href="###">留言</a></li>
@@ -894,7 +944,7 @@
 	                <li><a href="###">通用设置</a></li>
 	                <li><a href="###">主动发起</a></li>
 	                <li><a href="###">浮动窗口</a></li>
-	                <li class="pc_active">邀请框</li>
+	                <li class="active">邀请框</li>
 	                <li class="disabled"><a href="###">客服图标</a></li>
 	                <li><a href="###">新窗口</a></li>
 	                <li class="disabled"><a href="###">留言</a></li>
@@ -968,7 +1018,7 @@
 			<span>预览</span>
 			<div class="children_title_tabcard">
 				<span class="tab_event tab_card tab_left">1</span>
-				<span class="tab_event tab_card tab_between active">2</span>
+				<span class="tab_event tab_card tab_right active">2</span>
 			</div>
 		</div>
 
@@ -978,7 +1028,7 @@
 				<span>预览</span>
 				<div class="children_title_tabcard">
 					<span class="tab_event tab_card tab_left">1</span>
-					<span class="tab_event tab_card tab_between active">2</span>
+					<span class="tab_event tab_card tab_right active">2</span>
 				</div>
 			</div>
 		</textarea>
@@ -1146,10 +1196,10 @@
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-yidongtubiaodayuanxing</textarea>
 		</label>
-
-		<label class="icon iconfont icon-zhankaishouna-left">
+		
+		<label class="icon iconfont icon-zhankaishouna-right">
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
-			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhankaishouna-left</textarea>
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhankaishouna-right</textarea>
 		</label>
 		<label class="icon iconfont icon-yijicaidanshounazhankai-top">
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
@@ -1248,7 +1298,7 @@
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-daohanglan-zhuanshukefu</textarea>
 		</label>
-		<label class="icon iconfont icon-daohanglan-woyaozhengqian">
+		<label class="icon iconfont icon-woyaozhengqian">
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-daohanglan-woyaozhengqian</textarea>
 		</label>
@@ -1299,6 +1349,18 @@
 		<label class="icon iconfont icon-yijicaidanshounazhankai-bottom">
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-yijicaidanshounazhankai-bottom</textarea>
+		</label>
+		<label class="icon iconfont icon-waibulianjietiaozhuan">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-waibulianjietiaozhuan</textarea>
+		</label>
+		<label class="icon iconfont icon-shijian">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-shijian</textarea>
+		</label>
+		<label class="icon iconfont icon-copy">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-copy</textarea>
 		</label>
 	</div>
 
@@ -1693,6 +1755,8 @@
 	$(".mask_close").click(function(){
 		$(".walnut_masking").hide();
 	})
+	// 时间选择器
+	w.timePicker(".time_select");
 
 	// 插件-拖动排序
 	var drag = w('.move_ul').tjgSortable({
@@ -1714,8 +1778,8 @@
 		value:'2018-09-05 09:45:16',	// 初始化时间 [格式要与format一致]
 		minDate:'2018-08-15',
 		maxDate:'2022-11-11',
-		// menu_btn:['clear','today','confirm'],
-		small_size:0,			// 是否为小尺寸240px;默认280px;
+		menu_btn:['confirm'],
+		small_size:1,			// 是否为小尺寸240px;默认280px;
 		callback:function(val){
 			console.log('----callback',val)
 		}
@@ -1727,7 +1791,7 @@
 		menu_btn:['clear','today','confirm'],
 		minDate:'2015-08-11',
 		maxDate:'today',
-		small_size:0,
+		small_size:1,
 		callback:function(val){
 			console.log('----callback',val)
 		}

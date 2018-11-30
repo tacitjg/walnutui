@@ -188,11 +188,22 @@
 			var clone = this[0] ? this[0].cloneNode(deep) : 0;
 			return Walnut(clone)
 		},
+		text: function(str){
+			if (!str){
+				return this[0] ? w.getText(this[0]) : '';
+			}
+			str = w.htmlEncode(str+'');
+			this.each(function(){
+				w.event.removeAll(this);
+				this.innerHTML = str;
+			})
+			return this;
+		},
 		html: function(str){
 			if (!str){
-				return this[0] ? this[0].innerHTML : undefined;
+				return this[0] ? this[0].innerHTML : '';
 			}
-			this.each(function(i){
+			this.each(function(){
 				w.event.removeAll(this);
 				var nodename = this.nodeName.toLowerCase();
 				if (nodename=='table') {
@@ -289,7 +300,7 @@
 			return this;
 		},
 		animate: function(cssEnd, time ,callback){
-			this.each(function(idx){
+			this.each(function(){
 				var elem = this, cssBegin = {};
 				for(var i in cssEnd){
 					var style = w.getStyle(this,i),num = parseFloat(style);
@@ -350,26 +361,21 @@
 	var init = Walnut.fn.init = function(selector,context) {
 		if(!selector) return this;
 		if(typeof selector === "string") {
-			var _this = this;
-			switch(selector.charAt(0)){
-				case '#':
-					this[0] = document.getElementById(selector.substring(1));
-					this.length = 1;
-					break;
-				case '.':
-					var elements = document.querySelectorAll(selector);
-					return w.makeWalnut(elements);
-				default:
-					var elements = document.getElementsByTagName(selector);
-					return w.makeWalnut(elements);
+			selector = selector.trim();
+			if (/[\s\.>]/.test(selector)) {
+				return w.makeWalnut(document.querySelectorAll(selector));
 			}
-			return this;
+			if (selector.charAt(0) == '#') {
+				if (selector = document.getElementById(selector.substring(1))) {
+					return w.makeWalnut( [selector] );
+				}
+				return this;
+			}else{
+				return w.makeWalnut(document.getElementsByTagName(selector));
+			}
 		}else if (typeof selector === "function") {
 			w.event.add(window,'load',selector);
 		}else if (selector.nodeType) {
-			if (!selector.walnut_mark) {
-				selector.walnut_mark = ++expando+'';
-			}
 			this[0] = selector;
 			this.length = 1;
 			return this;
@@ -384,9 +390,6 @@
 		for(var i = 0 ,len = arr.length; i<len; i++){
 			if (!duplicate || arr[i] && !w.contains(created, arr[i])) {
 				created[idx] = arr[i];
-				if (!(arr[i].walnut_mark)) {
-					arr[i].walnut_mark = ++expando+'';
-				}
 				created.length = ++idx;
 			}
 		}
@@ -422,6 +425,11 @@
 				return true;
 			}
 		}
+	}
+	// 获取文本内容
+	Walnut.getText = function(elem) {
+		var name = elem.nodeName.toLowerCase();
+		return (name==="input" || name==="textarea") ? elem.value : (elem.innerText||elem.contentText||'');
 	}
 	// 获取元素样式
 	Walnut.getStyle = function(obj,attr) {
@@ -722,6 +730,12 @@
 		}else{
 			e.returnValue = false;
 		}
+	}
+	Walnut.htmlEncode = function(str) {
+		return str.replace(/&/g,'&amp;').replace(/\"/g, '&quot;').replace(/\'/g, '&#039;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	}
+	Walnut.htmlDecode = function(str) {
+		return text.replace(/&amp;/g, '&').replace(/&amp;/g, '&').replace(/&quot;/g, '\"').replace(/&#039;/g, '\'').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&mdash;/g, '—');
 	}
 	Walnut.reg = {
 		'sora':/^\s*$/,
@@ -1169,8 +1183,71 @@
 		w(document).on("click",function(e){
 			w(".select_list").hide();
 			w(".select_content").hide();
+			w(".time_select_box").slideUp(200);
 		})
 	});
+
+	// time-picker (hour & minute)
+
+	Walnut.timePicker = function(ele){
+		var _elem = w(ele);
+		if (!_elem.length) return;
+		var hours_html = "";
+		var mins_html = "";
+		var o = "";
+		for(var i = 0; i < 24 ; i++){
+			o = i;
+			if( i <= 9 ) i = '0'+i;
+			hours_html += '<li data-num='+o+'>'+i+'</li>';
+		}
+		for(var j = 0; j < 60 ; j++){
+			o = j;
+			if( j <= 9 ) j = '0'+j;
+			mins_html += '<li data-num='+o+'>'+j+'</li>';
+		}
+		_elem.find('.time_hours').html(hours_html);
+		_elem.find('.time_mins').html(mins_html);
+
+		// 时间选择
+		w(".time_select").on("click","input",function(e){
+			w.stopPropagate(e);
+			var sele_box = w(this).parent().find(".time_select_box");
+			w(".time_select_box").not(sele_box[0]).slideUp(200);
+			sele_box.slideToggle();
+			// 置入时间
+			var d = new Date();
+			var hour,min,new_hour,new_min;
+			if(this.value == ""){
+				hour = parseInt(d.getHours());
+				min = parseInt(d.getMinutes());
+			}else{
+				hour = parseInt(this.value.substring(0,2));
+				min = parseInt(this.value.substring(3));
+			}
+			new_hour = w(this).parents(".set_time").find(".time_hours").find('li').eq(hour)[0];
+			new_min = w(this).parents(".set_time").find(".time_mins").find('li').eq(min)[0];
+			w(this).parents(".set_time").find(".time_hours").scrollTop(hour * 24 +1,200);
+			w(this).parents(".set_time").find(".time_mins").scrollTop(min * 24 +1,200);
+			w.singleSelect(new_hour);
+			w.singleSelect(new_min);
+		})
+		w(".time_select").on("click","li",function(e){
+			w.stopPropagate(e);
+			var _this = this;
+			var t = "";
+			var inp = w(_this).parents(".set_time").find("input")[0];
+			var oul = _this.parentNode;
+			var new_t = inp.value,hour,min;
+			w.singleSelect(this);
+			var scroll_t = _this.getAttribute("data-num") * 24 +1;
+			w(_this).parent().scrollTop(scroll_t,200);
+			var h = w(this).parents(".time_select_box").find(".time_hours").find(".active").html();
+			var m = w(this).parents(".time_select_box").find(".time_mins").find(".active").html();
+			t = h+ ':' +m;
+			inp.value = t;
+		})
+	}
+
 	// 插件-拖动排序
 	Walnut.fn.tjgSortable = function(opts){
 		var options={
@@ -1260,9 +1337,9 @@
 						onto_this.removeClass('dropping_item');
 						var newIndex = onto_this.index();
 						var is_change = newIndex==oldIndex? false : true;
-						if (options.callback) options.callback(is_change,newIndex,oldIndex);
 						me.activate();
 						onto_this = null;
+						if (options.callback) options.callback(is_change,newIndex,oldIndex);
 					});
 				});
 			})
@@ -1282,8 +1359,8 @@
 			console.error('format error このばか');
 			return;
 		}
-		var _elem = w('#'+id);
-		if (!_elem.length) return;
+		var dateElem = w('#'+id);
+		if (!dateElem.length) return;
 
 		var m_days = [31,28,31,30,31,30,31,31,30,31,30,31],
 			date_select, date_show, is_double, date_range_start, time_start, time_end, timer, lengths, minTime, maxTime;
@@ -1295,7 +1372,7 @@
 					return;
 				}
 				reset = true;
-				value = opts_new.value;
+				value = opts_new.value || 'today';
 				format = opts_new.format;
 				if (opts_new.minDate) minDate = opts_new.minDate;
 				if (opts_new.maxDate) maxDate = opts_new.maxDate;
@@ -1312,8 +1389,8 @@
 			time_start = '00:00:00';
 			time_end = '23:59:59';
 			lengths = (timer||format).match(/[ymd]+/gi).length;
-			minDate = minDate.replace(/today/gi,today_str).substring(0,lengths*3/(is_double+1)+1);
-			maxDate = maxDate.replace(/today/gi,today_str).substring(0,lengths*3/(is_double+1)+1);
+			minDate = fillDateDay(minDate.replace(/today/gi,today_str), lengths*3/(is_double+1)+1);
+			maxDate = fillDateDay(maxDate.replace(/today/gi,today_str), lengths*3/(is_double+1)+1);
 			minTime = new Date(minDate.split('-').join('/')).getTime();
 			maxTime = new Date(maxDate.split('-').join('/')).getTime();
 			if (minTime>maxTime) maxTime = minTime = 0;
@@ -1324,8 +1401,8 @@
 			}
 			setDateValue(value,reset);
 			var val = value ? getDateString(date_select) : '';
-			_elem.find('.wt_calendar_input')[0].value = val;
-			if (opts_new&&callback) callback.call(_elem,val);
+			dateElem[0].firstChild.value = val;
+			if (opts_new&&callback) callback(val);
 		}
 		function initHtml(){
 			var css_double = is_double ? ' wt_calendar_double' : '',
@@ -1343,11 +1420,11 @@
 				if (words[menu_btn[i]]) date_html += '<span class="gray_btn wt_calendar_'+menu_btn[i]+'">'+words[menu_btn[i]]+'</span>';
 			}
 			date_html += '</div></div></div>';
-			_elem[0].innerHTML = date_html;
+			dateElem.html(date_html);
 			if (timer) {
 				initTimer();
-			}else if (!_elem.find('.gray_btn').length) {
-				_elem.find('.wt_calendar_bottom').remove();
+			}else if (!dateElem.find('.gray_btn').length) {
+				dateElem.find('.wt_calendar_bottom').remove();
 			}
 		}
 		function is_leap(year) {  //判断是否为闰年
@@ -1355,6 +1432,14 @@
 		}
 		function fillString(num, length) {
 			return (Array(length).join('0') + num).slice(-length);
+		}
+		function fillDateDay(str, maxLen) {
+			var pattern = 'yyyy-01-01';
+			for(var i=0; i<10; i++){
+				if (!str[i]) str += pattern[i];
+			}
+			if (maxLen) str = str.substring(0,maxLen);
+			return str;
 		}
 		function setDateNow() {
 			var now = new Date(),
@@ -1365,11 +1450,16 @@
 				date_select[i] = date_show[i] = today[idx];
 				idx++;
 			}
-			if (is_double) {
-				time_start = '00:00:00';
-				time_end = fillString(now.getHours(),2)+':'+fillString(now.getMinutes(),2)+':'+fillString(now.getSeconds(),2);
-			}else{
-				time_start = fillString(now.getHours(),2)+':'+fillString(now.getMinutes(),2)+':'+fillString(now.getSeconds(),2);
+			if (timer) {
+				if (is_double) {
+					time_start = '00:00:00';
+					time_end = fillString(now.getHours(),2)+':'+fillString(now.getMinutes(),2)+':'+fillString(now.getSeconds(),2);
+				}else{
+					time_start = fillString(now.getHours(),2)+':'+fillString(now.getMinutes(),2)+':'+fillString(now.getSeconds(),2);
+				}
+				var timer_len = format.split(' ')[3].length;
+				time_start = time_start.substring(0,timer_len);
+				time_end = time_end.substring(0,timer_len);
 			}
 		}
 		function setDateValue(str,reset) {
@@ -1378,7 +1468,8 @@
 				if (!reset || value=='today') {
 					return setDateNow();
 				}else{
-					_elem.find('.wt_calendar_input')[0].value = getDateString(date_select);
+					setDateNow();
+					dateElem[0].firstChild.value = getDateString(date_select);
 					return;
 				}
 			}
@@ -1461,46 +1552,46 @@
 						date_range_start = '';
 					}
 				}
-				_elem.find('.wt_calendar_y')[0].innerHTML = date_show[0]+"年";
-				_elem.find('.wt_calendar_m')[0].innerHTML = date_show[1]+1+"月";
-				_elem.find('.wt_calendar_y')[1].innerHTML = date_show[lengths/2]+"年";
-				_elem.find('.wt_calendar_m')[1].innerHTML = date_show[lengths/2+1]+1+"月";
+				dateElem.find('.wt_calendar_y')[0].innerHTML = date_show[0]+"年";
+				dateElem.find('.wt_calendar_m')[0].innerHTML = date_show[1]+1+"月";
+				dateElem.find('.wt_calendar_y')[1].innerHTML = date_show[lengths/2]+"年";
+				dateElem.find('.wt_calendar_m')[1].innerHTML = date_show[lengths/2+1]+1+"月";
 
 				if (lengths < 6) {
 					if (date_select[lengths/2-1]==date_select[lengths-1]) date_show[lengths-1] = date_show[lengths/2-1];
-					_elem.find('.wt_calendar_m').hide();
-					_elem.find('.wt_calendar_change_m').hide();
+					dateElem.find('.wt_calendar_m').hide();
+					dateElem.find('.wt_calendar_change_m').hide();
 					var type_y_m = lengths==2 ? 'y' : 'm';
 					show_year_month(0,type_y_m);
 					show_year_month(1,type_y_m);
 					return;
 				}
-				_elem.find('.wt_calendar_ul_y_m').removeClass('appear');
-				_elem.find('.wt_calendar_m').show();
+				dateElem.find('.wt_calendar_ul_y_m').removeClass('appear');
+				dateElem.find('.wt_calendar_m').show();
 				calendar(date_show[idx_y],date_show[1+idx_y] ,is_right);
 				// 相邻的面板跟随变动
 				if (first || date_show[next_idx]!==next_box[0] || date_show[next_idx+1]!==next_box[1]) {
 					calendar(date_show[next_idx],date_show[next_idx+1] ,(is_right+1)%2);
 				}
 				if(!date_range_start) updateRangeDate();
-				_elem.find('.iconfont').show();
+				dateElem.find('.iconfont').show();
 			}else{
-				_elem.find('.wt_calendar_y')[0].innerHTML = date_show[0]+"年";
-				_elem.find('.wt_calendar_m')[0].innerHTML = date_show[1]+1+"月";
+				dateElem.find('.wt_calendar_y')[0].innerHTML = date_show[0]+"年";
+				dateElem.find('.wt_calendar_m')[0].innerHTML = date_show[1]+1+"月";
 				if (lengths===3){
-					_elem.find('.wt_calendar_ul_y_m').removeClass('appear');
-					_elem.find('.wt_calendar_m').show();
+					dateElem.find('.wt_calendar_ul_y_m').removeClass('appear');
+					dateElem.find('.wt_calendar_m').show();
 					calendar(date_show[0], date_show[1]);
 				}else{
-					_elem.find('.wt_calendar_m').hide();
-					_elem.find('.wt_calendar_change_m').hide();
+					dateElem.find('.wt_calendar_m').hide();
+					dateElem.find('.wt_calendar_change_m').hide();
 					var type_y_m = lengths==1 ? 'y' : 'm';
 					show_year_month(0,type_y_m);
 				}
 			}
 		}
 		function show_year_month(is_right,type_y_m){
-			var ul = _elem.find('.wt_calendar_ul_y_m').eq(is_right);
+			var ul = dateElem.find('.wt_calendar_ul_y_m').eq(is_right);
 			var idx_y = is_right*lengths/2;
 			ul.addClass('appear');
 			var li_html = '';
@@ -1516,8 +1607,7 @@
 						li_html += '<li><span class="wt_calendar_li'+li_disabled+'" walnut_date="'+walnut_date+'">'+walnut_date+'</span></li>';
 					}
 				}
-				elem = _elem.find('.wt_calendar_y')[is_right];
-				elem.innerHTML = y+'年'+' ~ '+(y+11)+'年';
+				dateElem.find('.wt_calendar_y')[is_right].innerHTML = y+'年'+' ~ '+(y+11)+'年';
 			}else {
 				var is_last = is_double&&lengths===4||!is_double&&lengths===2;
 				for(var i=0; i<12; i++){
@@ -1536,7 +1626,7 @@
 		function calc_year_month(y_m,obj){
 			var w_obj = w(obj);
 			if (w_obj.hasClass('li_disabled')) return;
-			var li_on = _elem.find('.li_on');
+			var li_on = dateElem.find('.li_on');
 			if (is_double) {
 				if (li_on.length === 1 && date_range_start) {
 					var date_end = obj.getAttribute('walnut_date');
@@ -1557,7 +1647,7 @@
 						date_select[1] -= 1;
 						date_select[3] -= 1;
 					}
-					if (_elem.find('.wt_calendar_confirm').length) {
+					if (dateElem.find('.wt_calendar_confirm').length) {
 						w_obj.addClass('li_on');
 					}else{
 						set_value(getDateString(date_select));
@@ -1573,7 +1663,7 @@
 				if (y_m=='m') {
 					date_select[1] = date_show[1];
 				}
-				if (_elem.find('.wt_calendar_confirm').length){
+				if (dateElem.find('.wt_calendar_confirm').length){
 					li_on.removeClass('li_on');
 					w_obj.addClass('li_on');
 				}else{
@@ -1582,15 +1672,15 @@
 			}
 		}
 		function calcPosition(){
-			var daterBox = _elem.find('.wt_calendar_content');
-			var input_wid = _elem[0].clientWidth;
-			var input_hei = _elem[0].clientHeight;
+			var daterBox = dateElem.find('.wt_calendar_content');
+			var input_wid = dateElem[0].clientWidth;
+			var input_hei = dateElem[0].clientHeight;
 			var win_wid = Math.min(document.documentElement.clientWidth, document.body.clientWidth);
 			var win_hei = Math.min(document.documentElement.clientHeight, document.body.clientHeight);
 			var con_wid = parseInt(daterBox.css('width'));
 			var con_hei = parseInt(daterBox.find('.wt_calendar_left').css('height'));
-			con_hei += _elem.find('.wt_calendar_bottom').length ? 90 : 40;
-			var offsetXY = _elem.offset();
+			con_hei += dateElem.find('.wt_calendar_bottom').length ? 90 : 40;
+			var offsetXY = dateElem.offset();
 			var pageYOffset = window.pageYOffset||document.documentElement.scrollTop;
 			// console.log(input_wid,'--input_wid',input_hei,'--input_hei')
 			// console.log(win_wid,'--win_wid',win_hei,'--win_hei')
@@ -1621,12 +1711,12 @@
 			return time<minTime || time > maxTime;
 		}
 		function updateRangeDate(){
-			var a = getDateString(date_select).replace(/\s\d{2}(:\d{2}){0,2}}/g,'').split(' ~ ');
-			var t1 = new Date(a[0].split('-').join('/')).getTime();
-			var t2 = new Date(a[1].split('-').join('/')).getTime();
-			_elem.find(".wt_calendar_box").find('.wt_calendar_day').each(function(){
+			var a = getDateString(date_select).replace(/\s\d{2}(:\d{2}){0,2}(?!\d)/g,'').split(' ~ ');
+			var t1 = new Date(a[0].split('-').join('/'));
+			var t2 = new Date(a[1].split('-').join('/'));
+			dateElem.find(".wt_calendar_box").find('.wt_calendar_day').each(function(){
 				var str = this.getAttribute('walnut_date').split('-').join('/');
-				var time = new Date(str).getTime();
+				var time = new Date(str);
 				if (time>=t1 && time<=t2) {
 					w(this).addClass('day_in_range');
 				}
@@ -1652,7 +1742,7 @@
 			}
 			var first_day = calc_prev_date(month-1,fc_week);
 			for(var i=0; i<6; i++) { // 表格的行
-				days_html += '<tr class="date">';
+				days_html += '<tr>';
 				for(var k=0; k<7; k++) { // 表格每行的单元格
 					idx = i*7 + k; // 单元格自然序列号
 					date_num = idx - fc_week + 1; // 计算日期
@@ -1697,15 +1787,15 @@
 				}
 				days_html += '</tr>';
 			}
-			_elem.find('tbody').eq(is_right_idx||0).html(days_html);
+			dateElem.find('tbody').eq(is_right_idx||0).html(days_html);
 		}
 		function set_value(val){
-			_elem.find('.wt_calendar_input')[0].value = val;
+			dateElem[0].firstChild.value = val;
 			toggleDatePicker();
-			if (callback) callback.call(_elem,val);
+			if (callback) callback(val);
 		}
 		function toggleDatePicker(is_show){
-			var daterBox = _elem.find('.wt_calendar_content');
+			var daterBox = dateElem.find('.wt_calendar_content');
 			if (is_show) {
 				w('.wt_calendar_content').not(daterBox[0]).hide().addClass('hidden');
 				calcPosition();
@@ -1721,7 +1811,7 @@
 			}
 		}
 		function toggleTimePicker(is_show){
-			var daterBox = _elem.find('.wt_calendar_content');
+			var daterBox = dateElem.find('.wt_calendar_content');
 			var wt_timer = daterBox.find('.wt_calendar_timer');
 			if (is_show) {
 				wt_timer.show();
@@ -1741,7 +1831,8 @@
 			var arr2 = time_end.split(':');
 			for(var i=0; i<arr1.length; i++){
 				if (arr1[i] > arr2[i]) {
-					time_start = '00:00:00';
+					var timer_len = format.split(' ')[3].length;
+					time_start = '00:00:00'.substring(0,timer_len);
 					break;
 				}else if (arr1[i] < arr2[i]) {
 					break;
@@ -1749,11 +1840,11 @@
 			}
 		}
 		function initTimer(){
-			if (_elem.find('.btn_timer').length){
+			if (dateElem.find('.btn_timer').length){
 				if (timer) {
-					_elem.find('.btn_timer').show();
+					dateElem.find('.btn_timer').show();
 				}else{
-					_elem.find('.btn_timer').hide();
+					dateElem.find('.btn_timer').hide();
 				}
 				return;
 			}
@@ -1768,22 +1859,22 @@
 					timer_html += '<ul>'+timer_ul+'</ul><ul>'+timer_ul+'</ul>';
 				}
 			}
-			_elem.find('.wt_calendar_timer').each(function(idx){
+			dateElem.find('.wt_calendar_timer').each(function(idx){
 				var top_h4 = is_double ? idx ? '<h4>结束时间</h4>' : '<h4>开始时间</h4>' : '<h4>选择时间</h4>';
 				this.innerHTML = top_h4+timer_html;
 			});
-			_elem.find('.wt_calendar_bottom').prepend('<em class="fl btn_timer">时间选择</em>');
-			_elem.find('.btn_timer').on('click',function(){
+			dateElem.find('.wt_calendar_bottom').prepend('<em class="fl btn_timer">时间选择</em>');
+			dateElem.find('.btn_timer').on('click',function(){
 				if (w(this).hasClass('alink')) {
 					toggleTimePicker();
 				}else{
-					var uls = _elem.find('.wt_calendar_timer').find('ul');
+					var uls = dateElem.find('.wt_calendar_timer').find('ul');
 					var start = time_start.split(':'), len = start.length;
 					toggleTimePicker(1);
-					_elem.find('h4')[0].innerHTML = date_select[0]+'年 '+(date_select[1]+1)+'月 '+date_select[2]+'日';
+					dateElem.find('h4')[0].innerHTML = date_select[0]+'年 '+(date_select[1]+1)+'月 '+date_select[2]+'日';
   					uls.removeClass('wt_diabled').eq(len-1).next(true).addClass('wt_diabled');
 					if (is_double) {
-						_elem.find('h4')[1].innerHTML = date_select[3]+'年 '+(date_select[4]+1)+'月 '+date_select[5]+'日';
+						dateElem.find('h4')[1].innerHTML = date_select[3]+'年 '+(date_select[4]+1)+'月 '+date_select[5]+'日';
 						uls.eq(len+2).next(true).addClass('wt_diabled');
 						var end = time_end.split(':');
 					}
@@ -1799,14 +1890,14 @@
 					}
 				}
 			})
-			_elem.find('.wt_calendar_timer').on('click','li',function(){
+			dateElem.find('.wt_calendar_timer').on('click','li',function(){
 				var li = w(this),ul = li.parent();
 				if (ul.hasClass('wt_diabled')) return;
 				li.addClass('active').siblings('.active').removeClass('active');
 				var height = this.clientHeight;
 				var scroll = (Number(this.innerHTML)-2)*height;
 				ul.scrollTop(scroll,200);
-				var uls = _elem.find('.wt_calendar_timer').find('.active');
+				var uls = dateElem.find('.wt_calendar_timer').find('.active');
 				var arr1 = time_start.split(':'), len = arr1.length, arr2 = [];
 				var is_one_day = date_select[2]==date_select[5]&&date_select[1]==date_select[4]&&date_select[0]==date_select[3];
 				for(var i=0; i<len; i++){
@@ -1835,8 +1926,8 @@
 			})
 		}
 		// 事件绑定
-		_elem.find('.wt_calendar_input').on('focus',function(){
-			var daterBox = _elem.find('.wt_calendar_content');
+		dateElem.find('.wt_calendar_input').on('focus',function(){
+			var daterBox = dateElem.find('.wt_calendar_content');
 			if (daterBox.hasClass('hidden')) {
 				setDateValue(this.value);
 				set_y_m_d('first',0,0);
@@ -1852,17 +1943,17 @@
 				this.blur();
 			}
 		}).next().on('click',function(){
-			var daterBox = _elem.find('.wt_calendar_content');
+			var daterBox = dateElem.find('.wt_calendar_content');
 			if (daterBox.hasClass('hidden')) {
 				setDateValue(this.previousSibling.value);
 				set_y_m_d('first',0,0);
 				toggleDatePicker(1);
 			}
 		})
-		_elem.find('.wt_calendar_content').on('click','.wt_calendar_day',function(){
+		dateElem.find('.wt_calendar_content').on('click','.wt_calendar_day',function(){
 			var _this = w(this);
 			if (_this.hasClass('day_diabled')) return;
-			var day_on = _elem.find('.day_on');
+			var day_on = dateElem.find('.day_on');
 			if (is_double) {
 				if (day_on.length==1 && date_range_start) {
 					_this.addClass('day_on');
@@ -1881,15 +1972,15 @@
 					if (timer && date_select[2]==date_select[5]&&date_select[1]==date_select[4]&&date_select[0]==date_select[3]) {
 						checkRangeTime();
 					}
-					if (_elem.find('.wt_calendar_confirm').length) {
+					if (dateElem.find('.wt_calendar_confirm').length) {
 						updateRangeDate();
 					}else{
 						set_value(getDateString(date_select));
 					}
 					date_range_start = '';
 				}else{
-					_elem.find('.day_on').removeClass('day_on');
-					_elem.find('.day_in_range').removeClass('day_in_range');
+					dateElem.find('.day_on').removeClass('day_on');
+					dateElem.find('.day_in_range').removeClass('day_in_range');
 					_this.addClass('day_on');
 					date_range_start = this.getAttribute('walnut_date');
 				}
@@ -1912,15 +2003,15 @@
 				date_select[0] = date_show[0];
 				date_select[1] = date_show[1];
 				date_select[2] = this.innerHTML;
-				if (_elem.find('.wt_calendar_confirm').length) {
-					_elem.find('.day_on').removeClass('day_on');
+				if (dateElem.find('.wt_calendar_confirm').length) {
+					dateElem.find('.day_on').removeClass('day_on');
 					_this.addClass('day_on');
 				}else{
 					set_value(getDateString(date_select));
 				}
 			}
 		})
-		_elem.find('.wt_calendar_content .iconfont').on('click',function(){
+		dateElem.find('.wt_calendar_content .iconfont').on('click',function(){
 			var _this = w(this);
 			var is_right = _this.parents('.wt_calendar_box').index();
 			var idx_y = is_right*lengths/2;
@@ -1945,13 +2036,13 @@
 				set_y_m_d(0,is_right,idx_y);
 			}
 		})
-		_elem.find('.wt_calendar_top').find('span').on('click',function(){
+		dateElem.find('.wt_calendar_top').find('span').on('click',function(){
 			var wt_calendar_box = w(this).parents('.wt_calendar_box');
 			var is_right = wt_calendar_box.index();
 			wt_calendar_box.find('.wt_calendar_change_m').hide().siblings('.wt_calendar_m').hide();
 			show_year_month(is_right,this.className.slice(-1));
 		})
-		_elem.find('.wt_calendar_ul_y_m').on('click','.wt_calendar_li',function(){
+		dateElem.find('.wt_calendar_ul_y_m').on('click','.wt_calendar_li',function(){
 			var is_right = w(this).parents('.wt_calendar_box').index();
 			var idx_y = is_right*lengths/2;
 			var y_m = this.innerHTML;
@@ -1959,7 +2050,7 @@
 				date_show[idx_y] = parseInt(y_m);
 				if ((is_double&&lengths>2) || (!is_double&&lengths>1)) {
 					show_year_month(is_right,'m');
-					_elem.find('.wt_calendar_y')[is_right].innerHTML = date_show[idx_y]+'年';
+					dateElem.find('.wt_calendar_y')[is_right].innerHTML = date_show[idx_y]+'年';
 				}else{
 					calc_year_month('y',this);
 				}
@@ -1967,21 +2058,21 @@
 				date_show[1+idx_y] = parseInt(y_m)-1;
 				if (lengths===3 || lengths===6) {
 					w(this.parentNode.parentNode).removeClass('appear');
-					_elem.find('.wt_calendar_m').eq(is_right).show().siblings('.wt_calendar_change_m').show();
+					dateElem.find('.wt_calendar_m').eq(is_right).show().siblings('.wt_calendar_change_m').show();
 					set_y_m_d(0,is_right,idx_y);
 				}else{
 					calc_year_month('m',this);
 				}
 			}
 		})
-		_elem.find('.wt_calendar_clear').on('click',function(){
+		dateElem.find('.wt_calendar_clear').on('click',function(){
 			set_value('');
 		})
-		_elem.find('.wt_calendar_today').on('click',function(){
+		dateElem.find('.wt_calendar_today').on('click',function(){
 			setDateNow();
 			set_value(getDateString(date_select));
 		})
-		_elem.find('.wt_calendar_confirm').on('click',function(){
+		dateElem.find('.wt_calendar_confirm').on('click',function(){
 			if (date_range_start) {
 				if (timer) {
 					checkRangeTime();
@@ -1993,7 +2084,7 @@
 				set_value(getDateString(date_select));
 			}
 		})
-		_elem.on('click',function(e){
+		dateElem.on('click',function(e){
 			w.stopPropagate(e);
 		})
 		w(document).on('click',function(){
@@ -2010,17 +2101,20 @@
 			reset: function(opts){
 				initDate(opts);
 			},
-			log:function(){
-				console.log(date_select,'---date_select')
-				console.log(date_show,'---date_show')
-				console.log(date_range_start,'---date_range_start')
-				console.log(time_start,'---time_start')
-				console.log(time_end,'---time_end')
+			log:function(str){
+				if (typeof str == 'string') {
+					return eval( str.replace(/[\.()]/g,'') );
+				}
 			}
 		};
 	}
 
 	// IE8方法兼容
+	if (!String.prototype.trim) {
+		String.prototype.trim = function(){
+			return this.replace(/(^\s*)|(\s*$)/g, "");
+		}
+	}
 	if (!Array.prototype.map) {
 		Array.prototype.map = function(callback, thisArg) {
 			var T, A, k;

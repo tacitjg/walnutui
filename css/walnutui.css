@@ -244,14 +244,13 @@ input.set_inp:focus{ border: 1px solid #A3B1C7; }
 /* 后台头部 */
 .setting_header {width: 100%;height:80px; background: #F7F8FA; border-bottom: 1px solid #CED5E0; padding-left: 15px; }
 .setting_header h6 {height: 45px; line-height: 45px; font-size: 16px;letter-spacing: 0.8px; }
+.setting_header ul li {float: left; margin-right: 20px; height: 35px; line-height: 30px; cursor: pointer; }
+.setting_header ul li:hover {border-bottom:3px solid #A3B1C7;}
 .setting_header ul li a{padding:12px 0; color:#434c5e; }
-.setting_header ul li.pc_active {border-bottom: 3px solid #57ad68; }
-.setting_header ul li.pc_active:hover{border-bottom:3px solid #D3D9E0;}
-.setting_header ul li {float: left; margin-right: 20px; height: 35px; line-height: 35px; cursor: pointer; }
+.setting_header ul li.active {border-bottom: 3px solid #3B99FC;color:#218BFC  }
 .setting_header ul li.disabled{cursor: not-allowed !important;}
 .setting_header ul li.disabled:hover {border-bottom:none;}
 .setting_header ul li.disabled a{color:#8DA2B5;cursor: not-allowed !important;}
-.setting_header ul li:hover {border-bottom:3px solid #D3D9E0;}
 .setting_header_title{background: #F7F8FA; border-bottom: 1px solid #CED5E0; padding-left: 15px; height: 45px; line-height: 45px; font-size: 16px;letter-spacing: 0.8px; }
 /* 后台子标题栏 */
 .children_title{background: #FFFFFF;box-shadow: inset 0 -1px 0 0 #D8DFEA;height:40px;line-height:40px;font-size: 18px;letter-spacing: 0.8px; position: relative;}
@@ -265,6 +264,20 @@ input.set_inp:focus{ border: 1px solid #A3B1C7; }
 
 .statu_bubble02{ position: relative;text-align: center;min-width: 30px; display: inline-block;padding:0 10px;height: 28px;background: #F44024;border-radius: 2px;font-family: PingFangSC-Regular;font-size: 12px;color: #FFFFFF;line-height: 28px;opacity: 0.9;filter: alpha(opacity=90)}
 .statu_bubble02:after{ position: absolute;content: "";width: 0; height: 0; left: 10px; bottom: -5px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #F44024;}
+
+/* time-picker */
+.set_time{display: inline-block;position: relative;width: 108px;}
+.set_time input{width: 100%;height: 28px;padding-left: 5px}
+.set_time i{position: absolute;color:#466080;top: 7px;right: 7px;}
+.set_time .time_select_box{width: 100%;height:144px;position: absolute;top: 29px;left: 0;z-index:999;display: none;}
+.set_time ul{float:left; width: 50%; background: #FFF;border: 1px solid #D3D9E0; z-index: 50;height: 144px;overflow: hidden;}
+.set_time ul:hover{overflow: auto;}
+.set_time ul li{height: 24px; padding: 0 10px; line-height: 24px;text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.set_time ul li:hover{background: #E7F4FD;}
+.set_time ul li.active{ background: #F2F2F2;}
+.set_time .time_mins{margin-left:-1px;width:55px;}
+.set_time{-moz-user-select:none; -webkit-user-select:none; -ms-user-select:none; -khtml-user-select:none; user-select:none; }
+
 /*datePicker*/
 .wt_calendar_input{width: 100%;height: 100%;padding: 5px 4px;}
 .wt_calendar_content{position: absolute;top: 30px;left: 0;width: 280px;background: #fff;border-radius: 4px;border: 1px solid #CED5E0;box-shadow: 0 1px 6px rgba(0,0,0,.2);z-index: 9999;-webkit-transition: transform 0.3s,opacity 0.3s;transition: transform 0.3s,opacity 0.3s;-webkit-transform-origin: center top 0px;transform-origin: center top 0px;will-change:transform;}
@@ -280,7 +293,7 @@ input.set_inp:focus{ border: 1px solid #A3B1C7; }
 .wt_calendar_bottom .btn_timer{line-height: 28px;margin-left: 10px;cursor: pointer;}
 .btn_chain span+span{border-left: none;border-radius: 0;}
 .btn_chain span:first-child{border-radius: 2px 0 0 2px;}
-.btn_chain span:last-child{border-radius: 0 2px 2px 0;}
+.btn_chain span:last-child{border-top-right-radius: 2px;border-bottom-right-radius: 2px;}
 
 .wt_calendar_left,.wt_calendar_right{position: relative;width: 100%;padding: 10px;height: 240px;}
 .wt_calendar_table{width: 100%;height: 100%;}
@@ -303,7 +316,7 @@ input.set_inp:focus{ border: 1px solid #A3B1C7; }
 .wt_calendar_content .wt_calendar_ul_y_m li span:hover{background: #E7F4FD;}
 .wt_calendar_content .wt_calendar_ul_y_m li span.li_disabled:hover{background: none;}
 .wt_calendar_content .wt_calendar_ul_y_m li span.li_on{background: #218BFC;color: #fff;}
-/*时间选择器*/
+/*日历-时间选择器*/
 .wt_calendar_content .wt_calendar_timer{position: absolute;top: 1px;left: 0;bottom: 0;width: 100%;z-index: 20;background: #fff;padding: 36px 10px 10px;-webkit-transition: transform 0.3s,opacity 0.3s;transition: transform 0.3s,opacity 0.3s;-webkit-transform-origin: center bottom 0px;transform-origin: center bottom 0px;will-change:transform;}
 .wt_calendar_content .wt_calendar_timer.hidden{-webkit-transform: scaleY(0);transform: scaleY(0);opacity: 0;filter: alpha(opacity=0);display: none;}
 .wt_calendar_timer>h4{position: absolute;top: -40px;left: 10px;right: 10px;height: 37px;line-height: 38px;background: #fff;z-index: 20;text-align: center;}
