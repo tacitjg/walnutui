@@ -15,14 +15,17 @@
 			})
 			return w.makeWalnut(elements, 'duplicate');
 		},
-		parents: function(selector){
+		parents: function(selector, until){
 			var elements = [];
 			this.each(function(){
 				var p = this.parentNode;
-				while(p.nodeType!==9 && !w.isEqual(p,selector)){
+				while(p && p.nodeType!==9){
+					if (w.isEqual(p,selector)){
+						elements.push(p);
+						if (!until) break;
+					}
 					p = p.parentNode;
 				}
-				if (p.nodeType!==9) elements.push(p);
 			})
 			return w.makeWalnut(elements, 'duplicate');
 		},
@@ -146,7 +149,7 @@
 						}
 					});
 				}else{
-					return this[0].getAttribute(prop);
+					return this[0] ? this[0].getAttribute(prop) : '';
 				}
 			}else{
 				this.each(function (){
@@ -162,7 +165,7 @@
 						setCache(this, prop);
 					});
 				}else{
-					return this[0] ? getCache(this[0],prop) : undefined;
+					return this[0] ? w.getData(this[0],prop) : '';
 				}
 			}else{
 				this.each(function (){
@@ -189,18 +192,13 @@
 			return Walnut(clone)
 		},
 		text: function(str){
-			if (!str){
+			if (str===undefined){
 				return this[0] ? w.getText(this[0]) : '';
 			}
-			str = w.htmlEncode(str+'');
-			this.each(function(){
-				w.event.removeAll(this);
-				this.innerHTML = str;
-			})
-			return this;
+			return this.empty().append(document.createTextNode(str));
 		},
 		html: function(str){
-			if (!str){
+			if (str===undefined){
 				return this[0] ? this[0].innerHTML : '';
 			}
 			this.each(function(){
@@ -266,7 +264,7 @@
 		remove: function(){
 			this.each(function(){
 				w.event.removeAll(this, 'contain_this');
-				delete w.cache[this.walnut_mark];
+				delete w.cache[this[w_mark]];
 				this.parentNode.removeChild(this);
 			})
 		},
@@ -325,26 +323,6 @@
 			})
 			return this;
 		},
-		scrollTop: function(to,speed){
-			to = Number(to)>0 ? Number(to) : 0;
-			this.each(function(){
-				var _this = this;
-				var temp = this.scrollTop;
-				var diff = to - temp;
-				if (diff){
-					var num = diff*16/(speed||16);
-					var timer = setInterval(function(){
-						temp += num;
-						if (temp>=to&&diff>0 || temp<=to&&diff<0) {
-							_this.scrollTop = to;
-							clearInterval(timer);
-						}else{
-							_this.scrollTop = temp;
-						}
-					},16)
-				}
-			})
-		},
 		offset: function(){
 			var top = 0,
 				left = 0,
@@ -385,7 +363,7 @@
 	window.w = window.walnut = Walnut;
 
 	// 生成Walnut实例
-	Walnut.makeWalnut = function(arr,duplicate){
+	Walnut.makeWalnut = function(arr, duplicate){
 		var created = Walnut(), idx = 0;
 		for(var i = 0 ,len = arr.length; i<len; i++){
 			if (!duplicate || arr[i] && !w.contains(created, arr[i])) {
@@ -395,13 +373,13 @@
 		}
 		return created;
 	}
-	// 判断obj元素是否符合selector选择器
-	Walnut.isEqual = function(obj,selector) {
-		if (selector.nodeType) return obj===selector;
+	// 判断元素是否符合选择器
+	Walnut.isEqual = function(elem, selector) {
+		if (selector.nodeType) return elem===selector;
 		var arr = selector.split(',');
 		for (var i = arr.length - 1; i >= 0; i--) {
 			var type = arr[i].charAt(0);
-			if(type==='#' && "#"+obj.id===selector || type==='.' && w(obj).hasClass(arr[i].substring(1)) || obj.tagName.toLowerCase() === arr[i]){
+			if(type==='#' && "#"+elem.id===selector || type==='.' && w(elem).hasClass(arr[i].substring(1)) || elem.tagName.toLowerCase() === arr[i]){
 				return true;
 			}
 		}
@@ -418,10 +396,10 @@
 		}
 		return w.makeWalnut(unique);
 	}
-	// 判断arr是否存在ele元素
-	Walnut.contains = function(arr,ele){
+	// 判断集合中是否存在元素
+	Walnut.contains = function(arr, elem){
 		for(var i = 0 ,len = arr.length; i<len; i++){
-			if (arr[i] === ele) {
+			if (arr[i] === elem) {
 				return true;
 			}
 		}
@@ -429,21 +407,21 @@
 	// 获取文本内容
 	Walnut.getText = function(elem) {
 		var name = elem.nodeName.toLowerCase();
-		return (name==="input" || name==="textarea") ? elem.value : (elem.innerText||elem.contentText||'');
+		return (name==="input" || name==="textarea") ? elem.value : (elem.textContent||elem.innerText);
 	}
 	// 获取元素样式
-	Walnut.getStyle = function(obj,attr) {
+	Walnut.getStyle = function(elem, attr) {
 		if (window.getComputedStyle) {
-			if (obj.ownerDocument.defaultView.opener) {
-				var style = obj.ownerDocument.defaultView.getComputedStyle(obj,null)[attr];
+			if (elem.ownerDocument.defaultView.opener) {
+				var style = elem.ownerDocument.defaultView.getComputedStyle(elem,null)[attr];
 			}else{
-				var style = window.getComputedStyle(obj,null)[attr];
+				var style = window.getComputedStyle(elem,null)[attr];
 			}
 		}else{
-			var style = obj.currentStyle[attr];
+			var style = elem.currentStyle[attr];
 		}
 		if ((attr=='width'||attr=='height')&&style=='auto') {
-			var clientRect = obj.getBoundingClientRect();
+			var clientRect = elem.getBoundingClientRect();
 			return (style == "width" ? clientRect.right - clientRect.left : clientRect.bottom - clientRect.top) + "px";
 		}
 		return style;
@@ -457,7 +435,15 @@
 			return obj.join ? 'array' : typeof obj;
 		}
 	}
-	Walnut.each = function(obj,callback){
+	// 获取缓存数据
+	Walnut.getData = function(elem, key) {
+		try{
+			return w.cache[elem[w_mark]].data[key];
+		}catch(e){
+			return elem.getAttribute('data-'+key) || '';
+		}
+	}
+	Walnut.each = function(obj, callback){
 		var len = obj.length;
 		if (Walnut.getType( obj ) == 'array') {
 			for (var i = 0 ; i < len; i++ ) {
@@ -474,17 +460,12 @@
 	}
 	Walnut.cache = {};
 	var expando = 0;
+	var w_mark = 'walnut_' + new Date().getTime()%1019;
 	var w_typeof = {};
-	function getCache(elem, key){
-		var data;
-		try{
-			return w.cache[elem.walnut_mark].data[key];
-		}catch(e){}
-	}
 	function setCache(elem, prop, value){
-		var key = elem.walnut_mark, data;
+		var key = elem[w_mark], data;
 		if (!key) {
-			key = elem.walnut_mark = ++expando+'';
+			key = elem[w_mark] = ++expando+'';
 			w.cache[key] = {};
 		}else if (!w.cache[key]){
 			w.cache[key] = {};
@@ -593,26 +574,76 @@
 			})
 		};
 	})
+	Walnut.each(['scrollTop','scrollLeft'],function( i, name ){
+		Walnut.fn[ name ] = function(end_to, speed) {
+			end_to = Number(end_to)>0 ? Number(end_to) : 0;
+			this.each(function(){
+				var _this = this;
+				var temp = this[name];
+				var diff = end_to - temp;
+				if (diff){
+					var num = diff*16/(speed||16);
+					var timer = setInterval(function(){
+						temp += num;
+						if (temp>=end_to&&diff>0 || temp<=end_to&&diff<0) {
+							_this[name] = end_to;
+							clearInterval(timer);
+						}else{
+							_this[name] = temp;
+						}
+					},16)
+				}
+			})
+		}
+	})
 	Walnut.each(["blur", "focus", "focusin", "focusout", "load", "resize", "scroll", "unload", "click", "dblclick", "mousedown", "mouseup", "mousemove", "mouseover", "mouseout", "mouseenter", "mouseleave", "change", "select", "submit", "keydown", "keypress", "keyup", "error", "contextmenu"], function( i, name ) {
 		Walnut.fn[ name ] = function(fn) {
-			this.on( name, null, fn);
+			return this.on( name, null, fn);
 		};
 	})
+	Walnut.addEvent = function(obj,etype,fn){
+		if (etype==='mousewheel' && Walnut.broswerType==="火狐"){
+			etype = 'DOMMouseScroll';
+		}
+		if(obj.addEventListener){
+			obj.addEventListener(etype,fn,false);
+		}else{
+			obj.attachEvent('on'+etype,fn);
+		}
+	}
+	Walnut.removeEvent = function(obj,etype,fn){
+		if (etype==='mousewheel' && Walnut.broswerType==="火狐"){
+			etype = 'DOMMouseScroll';
+		}
+		if (obj.removeEventListener){
+			obj.removeEventListener(etype, fn, false);
+		}else if (obj.detachEvent){
+			obj.detachEvent("on" + etype, fn);
+		}
+	}
 	Walnut.event = {
 		add: function(obj,etype,fn,selector){
-			var type = etype.split('.'), events;
+			var type = etype.split('.'), events, eventHandle;
 			etype = type[0];
-			var eventHandle = selector ? function(event){
-				var elem = event.srcElement ? event.srcElement : event.target;
-				var pElem = w(elem).parents(selector);
-				if (Walnut.isEqual(elem,selector)){
-					fn.call(elem, event);
-				}else if (pElem.length && Walnut.contains(obj.querySelectorAll(selector),pElem[0])) {
-					fn.call(pElem[0], event);
+			if (selector) {
+				eventHandle = function(event){
+					var elem = event.srcElement ? event.srcElement : event.target;
+					var pElem = w(elem).parents(selector);
+					if (Walnut.isEqual(elem,selector)){
+						fn.call(elem, event);
+					}else if (pElem.length && Walnut.contains(eventHandle.elem.querySelectorAll(selector),pElem[0])) {
+						fn.call(pElem[0], event);
+					}
 				}
-			} : function(event){
-				fn.call(obj,event);
-			};
+				eventHandle.elem = obj;
+			}else if(obj.addEventListener){
+				eventHandle = fn;
+			}else{
+				eventHandle = function(event){
+					fn.call(eventHandle.elem,event);
+				}
+				eventHandle.elem = obj;
+			}
 			var eventData = {
 				type: type[0],
 				selector: selector||obj.id||obj.className||'',
@@ -626,28 +657,22 @@
 			if (!events[type[0]]) events[type[0]] = [];
 			events[type[0]].push(eventData);
 
-			if (type[0]==='mousewheel' && Walnut.broswerType==="火狐"){
-				etype = 'DOMMouseScroll';
-			}
-			if(obj.addEventListener){
-				obj.addEventListener(etype,eventHandle,false);
-			}else{
-				obj.attachEvent('on'+etype,eventHandle);
-			}
+			w.addEvent(obj,etype,eventHandle);
+			obj = null;
 		},
 		remove: function(elem, type, fn){
 			if (fn) return w.removeEvent(elem, type, fn);
-			var events, hasEvents=0, mark = elem.walnut_mark;
+			var events, hasEvents=0, mark = elem[w_mark];
 			if (mark && w.cache[mark] && (events = w.cache[mark].events)) {
 				for(var i in events){
-					hasEvents += 1;
+					hasEvents++;
 					var handlers = events[i];
 					for(var j=0; j<handlers.length; j++){
 						if (!type || handlers[j].type==type || handlers[j].namespace==type) {
 							w.removeEvent(elem, handlers[j].type, handlers[j].handler);
 							handlers.splice(j,1);
 							if (!handlers.length) {
-								hasEvents -= 1;
+								hasEvents--;
 								delete events[i];
 								break;
 							}
@@ -661,19 +686,12 @@
 		removeAll: function(pElem,contain_this){
 			if (contain_this) this.remove(pElem);
 			w.each(pElem.getElementsByTagName('*'), function(i,elem){
-				var mark = elem.walnut_mark;
+				var mark = elem[w_mark];
 				if (mark && w.cache[mark] && w.cache[mark].events) {
 					w.event.remove(elem);
-					delete w.cache[elem.walnut_mark];
+					delete w.cache[elem[w_mark]];
 				}
 			})
-		}
-	}
-	Walnut.removeEvent = function(obj,etype,fn){
-		if (obj.removeEventListener){
-			obj.removeEventListener(etype, fn, false);
-		}else if (obj.detachEvent){
-			obj.detachEvent("on" + etype, fn);
 		}
 	}
 	Walnut.animateGo = function(elem,cssBegin,cssEnd,time,callback){
@@ -699,7 +717,7 @@
 						elem.style.filter = 'alpha(opacity='+cssEnd[i]*100+')';
 					}
 				}
-				var mark = elem.walnut_mark;
+				var mark = elem[w_mark];
 				if (callback) callback.call(elem);
 				if (!w.cache[mark]) return;
 				// 有等待的动画时继续执行
@@ -730,12 +748,6 @@
 		}else{
 			e.returnValue = false;
 		}
-	}
-	Walnut.htmlEncode = function(str) {
-		return str.replace(/&/g,'&amp;').replace(/\"/g, '&quot;').replace(/\'/g, '&#039;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-	}
-	Walnut.htmlDecode = function(str) {
-		return text.replace(/&amp;/g, '&').replace(/&amp;/g, '&').replace(/&quot;/g, '\"').replace(/&#039;/g, '\'').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&mdash;/g, '—');
 	}
 	Walnut.reg = {
 		'sora':/^\s*$/,
@@ -1188,7 +1200,6 @@
 	});
 
 	// time-picker (hour & minute)
-
 	Walnut.timePicker = function(ele){
 		var _elem = w(ele);
 		if (!_elem.length) return;
@@ -1402,7 +1413,7 @@
 			setDateValue(value,reset);
 			var val = value ? getDateString(date_select) : '';
 			dateElem[0].firstChild.value = val;
-			if (opts_new&&callback) callback(val);
+			if (opts_new&&callback) callback(val, 'reset');
 		}
 		function initHtml(){
 			var css_double = is_double ? ' wt_calendar_double' : '',

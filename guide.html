@@ -249,6 +249,20 @@
 		</div>
 	</textarea>
 
+	<div style="display: inline-block;">
+		<span class="main_switch_noevent is_off" id="switchBtn_noevent">
+			<b></b>
+		</span>
+	</div>
+
+	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制（无事件版本）" / style="vertical-align: 8px;width:115px">
+	<textarea class="copy_text" name="" id="" cols="30" rows="10">
+		<div style="display: inline-block;">
+			<span class="main_switch_noevent is_off" id="switchBtn_noevent">
+				<b></b>
+			</span>
+		</div>
+	</textarea>
 	<hr>
 	<h3>下拉菜单</h3>
 	<div class="select_box" style="width: 200px">
@@ -277,7 +291,7 @@
 			</ul>
 		</div>
 	</textarea>
-	<div class="select_extend" style="width: 200px">
+	<div class="select_extend" style="width: 200px" slide_speed="500">
 		<p class="list_selected select_arrow">123</p>
 		<div class="select_content">
 			<div class="select_extend_data">
@@ -893,19 +907,19 @@
 	</textarea>
 	<div id="date_picker2" style="display: inline-block;width: 300px;position: relative;height: 28px;margin-top: 10px;float: right;"></div>
 
-	
+
 
 	<hr>
 	<h3>私人定制</h3>
 
 	<div class="customize" style="display: inline-block;">
-		<i class="iconfont icon-Tips"></i>	
+		<i class="iconfont icon-Tips"></i>
         客服图标支持定制版本，<span class="alink" onclick="chat()">联系专属客服咨询详情</span>
     </div>
 	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;">
 	<textarea class="copy_text" name="" id="" cols="30" rows="10">
 		<div class="customize">
-			<i class="iconfont icon-Tips"></i>	
+			<i class="iconfont icon-Tips"></i>
 	        客服图标支持定制版本，<span class="alink" onclick="chat()">联系专属客服咨询详情</span>
 	    </div>
 	</textarea>
@@ -1196,7 +1210,7 @@
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-yidongtubiaodayuanxing</textarea>
 		</label>
-		
+
 		<label class="icon iconfont icon-zhankaishouna-right">
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhankaishouna-right</textarea>
@@ -1724,8 +1738,6 @@
 	$(".normal_btn").click(function(){
 		w.lucencyAlert("这只是一条普通的测试信息")
 	})
-	//去蓝块
-	w.removeBlue();
 	//下拉菜单
 	$(".select_box").click(function(){
 		w.dropDown(this);
@@ -1768,7 +1780,7 @@
 			console.log('is changed:',is_change,'----------callback')
 		}
 	})
-	w(document).on('mousedown','.move_by_me',function(e){
+	$('.move_ul').on('mousedown','.move_by_me',function(e){
 		w.lucencyAlert("这只是一条普通的测试信息");
 	})
 	// 插件-日期选择器

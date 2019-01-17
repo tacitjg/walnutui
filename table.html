@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>colResizable demo</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/walnutui.css">
+	<link rel="stylesheet" href="font/font_kfxt/iconfont.css">
+	<link rel="stylesheet" href="font/font_fkd/iconfont.css">
+	<script src="./walnutui.js"></script>
+	<script src="./walnut/jquery-1.11.3.js"></script>
+	<style type="text/css">
+		li{list-style: none;height: 40px;}
+		*{font-size: 12px;margin: 0;padding: 0;}
+		.fl{float: left;}
+		.no_select{
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Chrome/Safari/Opera */
+			-khtml-user-select: none; /* Konqueror */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none;
+		}
+		html,body{
+			background: #134;
+		}
+		body ::-webkit-scrollbar{
+			width: 9px;
+			height: 10px;
+		}
+		body ::-webkit-scrollbar-track{
+			border-radius: 10px;
+			background-color: #eee;
+		}
+		body ::-webkit-scrollbar-thumb{
+			border-radius: 2px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+			background-color: #acd;
+		}
+		table{table-layout: fixed;width: 100%;min-width: 100%;}
+		td,th{position: relative;height: 40px;border-bottom: 1px solid #513;text-align: left;padding: 10px;}
+		th i{position: absolute;right: 0;top: 8px;bottom: 8px;width: 10px;cursor: col-resize;}
+		th i:after{content:'';position: absolute;left: 4px;top: 0;bottom: 0;width: 2px;background: #614;}
+		td>div{height: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+	</style>
+</head>
+<body>
+<div class="content" style="width: 66%;height: 100%;margin:0 auto;background-color: #486;padding-top: 50px;">
+	<div id="table_wrap" style="background: #def;overflow: hidden;">
+		<div class="table_top" style="overflow: hidden;background: #cde">
+			<table>
+				<colgroup>
+					<col style="width: 40px;">
+					<col style="width: 120px;">
+					<col style="width: 150px;" minWidth="150">
+					<col style="width: 160px;" minWidth="160">
+					<col style="width: 200px;" minWidth="200">
+					<col style="width: 120px;">
+					<col style="width: 100px;">
+				</colgroup>
+				<thead>
+					<tr>
+						<th><span class="iconfont icon-CheckboxDefuben"></span></th>
+						<th>访客<i class="move"></i></th>
+						<th>活动名称<i class="move"></i></th>
+						<th>奖品名称<i class="move"></i></th>
+						<th>接待客服<i class="move"></i></th>
+						<th>手机号码<i class="move"></i></th>
+						<th>抽奖时间</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="table_content" style="max-height: 500px;overflow: auto;">
+			<table>
+				<colgroup>
+					<col style="width: 40px;">
+					<col style="width: 120px;">
+					<col style="width: 150px;" minWidth="150">
+					<col style="width: 160px;" minWidth="160">
+					<col style="width: 200px;" minWidth="200">
+					<col style="width: 120px;">
+					<col style="width: 100px;">
+				</colgroup>
+				<thead>
+					<tr>
+						<td><span class="iconfont icon-CheckboxDefuben"></span></td>
+						<td><div>访客10132314395000</div></td>
+						<td><div>活动名称123</div></td>
+						<td><div>奖品名称123</div></td>
+						<td><div>接待客服123</div></td>
+						<td><div>1575536426</div></td>
+						<td><div>2018-12-05 09:45:10</div></td>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+	var a = $('.table_content thead').html();
+	for (var i = 3; i >= 0; i--) {
+		$('.table_content thead').append(a);
+	}
+	function alignTable(){
+		var scrollbar = $('.table_content').width() - $('.table_content>table').width();
+		$('.table_top').css('padding-right',scrollbar+'px');
+	}
+	alignTable();
+	window.onresize = alignTable();
+
+	w('.move').mousedown(function(event){
+		w('#table_wrap').addClass('no_select');
+		if (window.getSelection) window.getSelection().removeAllRanges();
+		var e = event || window.event;
+		var pageX = e.pageX || e.clientX;
+		var th = w(this.parentNode),
+			idx = th.index(),
+			col_idx = th.parents('thead').prev().children().eq(idx),
+			min = parseInt(col_idx.attr('minWidth'))||100,
+			w1 = parseInt(col_idx[0].style.width),
+			moveX;
+		w(document).on("mousemove.tableResize",function(event){
+			var e = event || window.event;
+			moveX = (e.pageX || e.clientX) - pageX;
+			// console.log(moveX,'====moveX',w1)
+			var w2 = w1 + moveX;
+			if (w2 < min){
+				w2 = min;
+				if (w1 === min) return;
+			}
+			w('#table_wrap colgroup').each(function(){
+				w(this).children().eq(idx).css({'width':w2+'px'});
+			});
+		})
+		w(document).on("mouseup.tableResize",function(){
+			w(document).off('tableResize');
+			w('#table_wrap').removeClass('no_select');
+		});
+	})
+	w('.table_content').on('scroll',function(){
+		var x = this.scrollLeft;
+		w('.table_top')[0].scrollLeft = x;
+	})
+</script>
+</html>
+

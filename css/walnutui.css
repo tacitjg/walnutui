@@ -121,6 +121,14 @@ input.set_inp:focus{ border: 1px solid #A3B1C7; }
 .main_switch.is_off b {left: 4px; }
 .main_switch.is_off {background: #99ABB6; border-color: #83929C; }
 
+/*开关滑块_无事件版本*/
+.main_switch_noevent{background: #52A362; border: 1px solid #52A362; border-radius: 2px; width: 56px; height: 26px; position: relative; display: inline-block; transition: 0.2s; cursor: pointer; }
+.main_switch_noevent:before {content: "开"; position: absolute; left: 0; top: 0; width: 50%; height: 100%; font-family: SourceHanSansCN-Regular; font-size: 12px; color: #FFFFFF; line-height: 24px; text-align: center; }
+.main_switch_noevent:after {content: "关"; position: absolute; right: 0; top: 0; width: 50%; height: 100%; font-family: SourceHanSansCN-Regular; font-size: 12px; color: #FFFFFF; line-height: 24px; text-align: center; }
+.main_switch_noevent b {position: absolute; left: 32px; top: 2px; background: #FFFFFF; border-radius: 2px; width: 20px; height: 20px; cursor: pointer; transition: 0.2s; }
+.main_switch_noevent.is_off b {left: 4px; }
+.main_switch_noevent.is_off {background: #99ABB6; border-color: #83929C; }
+
 /*下拉菜单01*/
 .select_box{background: #FFF; height: 28px; border-radius: 2px; line-height: 26px; position: relative; display: inline-block;}
 .select_box>p,.select_box>input{width: 100%;height: 100%;line-height: 26px;padding-left: 5px;padding-right: 16px;border:1px solid #CED5E0;border-radius: 2px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;cursor: pointer;}
@@ -164,7 +172,7 @@ input.set_inp:focus{ border: 1px solid #A3B1C7; }
 
 /* 弹层 -- 未保存更改*/
 .popup_box{width: 380px;font-size: 14px; position: fixed;background-color: #FFF;top: 50%;left: 50%;margin-left: -190px;display:none;z-index: 1000000}
-.popup_box .popup_header{width: 100%;padding-left: 15px;height: 36px;line-height: 35px;border-bottom: 1px solid #CED5E0;background:#F7F8FA;}
+.popup_box .popup_header{width: 100%;padding-left: 10px;height: 36px;line-height: 36px;border-bottom: 1px solid #CED5E0;background:#F7F8FA;}
 .popup_box .popup_header .popup_close{float: right;margin-right: 10px;cursor: pointer;opacity: 0.8;filter: alpha(opacity=80);}
 .popup_box .popup_header .popup_close:hover{opacity: 1;filter: alpha(opacity=100);}
 .popup_box .popup_body{width: 100%;padding: 20px 20px 15px;background: #FFF;}
