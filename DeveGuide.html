@@ -5,9 +5,8 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="css/walnutui.css">
 	<link rel="stylesheet" href="font/font_kfxt/iconfont.css">
-	<link rel="stylesheet" href="font/font_fkd/iconfont.css">
 	<script src="./walnutui.js"></script>
-	<script src="./walnut/jquery-1.11.3.js"></script>
+	<script src="./walnut/jquery-1.11.3.min.js"></script>
 	<!-- <script src="./walnut/jquery-3.3.1.js"></script> -->
 	<style>
 		body{
@@ -96,10 +95,59 @@
 		.icons .icon-RadioDefault:before{font-size:36px!important; }
 		.icons .icon-RadioSelected:before{font-size:36px!important; }
 		.icon input{z-index: 99; }
+
+
+		.asd img{
+			height: 100%;
+		}
+		.asd ul{position: absolute;width:1280px;left:0;top:0;bottom: 0;
+			white-space: nowrap;
+			overflow: hidden;
+	        /*animation: move 7s linear 0s infinite;*/
+	        /*-moz-animation: move 4s linear 0s infinite;*/
+	    }
+	    .asd ul:hover{
+           animation-play-state: paused;
+           /*-moz-animation-play-state: paused;*/
+       }
+		@keyframes move{
+			from {left: 0;}
+			to {left: -640px;}
+		}
+		.no_transit{transition: none!important;}
+		.qwe ul{position: absolute;width:500%;left:-100%;top:0;bottom: 0;transition: left 0.5s;}
+		.qwe ul li{display: inline-block;height: 100%;}
+		.qwe ul li img{height: 100%;}
 	</style>
 </head>
 <body>
 <div id="guide">
+	<div class="asd" style="width: 60%;height: 100px;position: relative;overflow: hidden;">
+		<ul>
+			<img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAruIIY0fAAWWybgMSU0AAB-dQBejb0ABZbh255.jpg" alt=""><img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJ1XgAraIXQ8DAASFZpn_LacAAB-dAGXZOMABIV-533.jpg" alt=""><img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsCIFj7kAALAJNOzax8AAB-dQMcgm8AAsA8639.jpg" alt=""><img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsOIczYfAAV3PpCajsoAAB-dgCdICMABXdW025.jpg" alt="">
+
+			<img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAruIIY0fAAWWybgMSU0AAB-dQBejb0ABZbh255.jpg" alt=""><img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJ1XgAraIXQ8DAASFZpn_LacAAB-dAGXZOMABIV-533.jpg" alt=""><img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsCIFj7kAALAJNOzax8AAB-dQMcgm8AAsA8639.jpg" alt=""><img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsOIczYfAAV3PpCajsoAAB-dgCdICMABXdW025.jpg" alt="">
+		</ul>
+	</div>
+	<div class="qwe" style="width: 480px;height: 300px;position: relative;overflow: hidden;">
+		<ul class="banner">
+			<li class="fl">
+				<img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsOIczYfAAV3PpCajsoAAB-dgCdICMABXdW025.jpg" alt="">
+			</li>
+			<li class="fl">
+				<img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAruIIY0fAAWWybgMSU0AAB-dQBejb0ABZbh255.jpg" alt="">
+			</li>
+			<li class="fl">
+				<img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJ1XgAraIXQ8DAASFZpn_LacAAB-dAGXZOMABIV-533.jpg" alt="">
+			</li>
+			<li class="fl">
+				<img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsCIFj7kAALAJNOzax8AAB-dQMcgm8AAsA8639.jpg" alt="">
+			</li>
+			<li class="fl">
+				<img src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/0F/0B/ChMkJlXgAsOIczYfAAV3PpCajsoAAB-dgCdICMABXdW025.jpg" alt="">
+			</li>
+		</ul>
+	</div>
 	<h2>Walnut使用指南</h2>
 	<h4>点击复制即可获取DOM结构</h4>
 	<hr>
@@ -520,28 +568,28 @@
 	<hr>
 	<h3>按钮</h3>
 	<div>
-		<button class="red_btn">红</button>
+		<button class="red_btn">红色</button>
 
 		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
 		<textarea class="copy_text" name="" id="" cols="30" rows="10">
 			<button class="red_btn"></button>
 		</textarea>
 
-		<button class="gray_btn">灰</button>
+		<button class="gray_btn">灰色</button>
 
 		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
 		<textarea class="copy_text" name="" id="" cols="30" rows="10">
 			<button class="gray_btn"></button>
 		</textarea>
 
-		<button class="blue_btn">蓝</button>
+		<button class="blue_btn">蓝色</button>
 
 		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
 		<textarea class="copy_text" name="" id="" cols="30" rows="10">
 			<button class="blue_btn"></button>
 		</textarea>
 
-		<button class="white_btn">白</button>
+		<button class="white_btn">白色</button>
 
 		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / >
 		<textarea class="copy_text" name="" id="" cols="30" rows="10">
@@ -679,7 +727,7 @@
 				<a class="walnut_close popup_close iconfont icon-Close"></a>
 			</div>
 			<div class="popup_body clearfix">
-				<div class="popup_body_content iconfont icon-Tips"></div>
+				<div class="popup_body_content iconfont icon-PopupWarning"></div>
 				<div class="submit_btn">
 			    	<a class="walnut_reset gray_btn popup_reset fr">弃用</a>
 			    	<a class="walnut_save red_btn popup_save fr">保存更改</a>
@@ -808,13 +856,13 @@
 	<h3>拖动排序(自行修改类)</h3>
 	<div class="clearfix" style="position: relative;">
 		<ul class="move_ul fl activation" style="height: 200px;overflow: auto;">
-			<li class="move_li"><span>11111</span><i class="move_by_me"></i></li>
-			<li class="move_li"><span>22222</span><i class="move_by_me"></i></li>
-			<li class="move_li"><span>33333</span><i class="move_by_me"></i></li>
-			<li class="move_li"><span>44444</span><i class="move_by_me"></i></li>
-			<li class="move_li"><span>55555</span><i class="move_by_me"></i></li>
-			<li class="move_li"><span>66666</span><i class="move_by_me"></i></li>
-		</ul>
+				<li class="move_li"><span>11111</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>22222</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>33333</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>44444</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>55555</span><i class="move_by_me"></i></li>
+				<li class="move_li"><span>66666</span><i class="move_by_me"></i></li>
+			</ul>
 		<button class="white_btn" style="margin-top: 5px;" onclick="drag.activate();$('.move_ul').addClass('activation')">开启拖动</button>
 		<button class="white_btn" style="margin-top: 5px;" onclick="drag.disable();$('.move_ul').removeClass('activation')">禁用拖动</button>
 		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;">
@@ -914,13 +962,13 @@
 
 	<div class="customize" style="display: inline-block;">
 		<i class="iconfont icon-Tips"></i>
-        客服图标支持定制版本，<span class="alink" onclick="chat()">联系专属客服咨询详情</span>
+        客服图标支持定制版本，<span class="a_link" onclick="chat()">联系专属客服咨询详情</span>
     </div>
 	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-top: 5px;">
 	<textarea class="copy_text" name="" id="" cols="30" rows="10">
 		<div class="customize">
 			<i class="iconfont icon-Tips"></i>
-	        客服图标支持定制版本，<span class="alink" onclick="chat()">联系专属客服咨询详情</span>
+	        客服图标支持定制版本，<span class="a_link" onclick="chat()">联系专属客服咨询详情</span>
 	    </div>
 	</textarea>
 
@@ -963,6 +1011,40 @@
 	                <li><a href="###">新窗口</a></li>
 	                <li class="disabled"><a href="###">留言</a></li>
 	            </ul>
+			</div>
+		</textarea>
+		<p style="height:10px"></p>
+		<p style="margin-bottom: 5px;color:#4D71B1">子页面头部标题栏 PS：父级需有类名：frame-right;a标签内###自行替换</p>
+		<div class="sub_setting_header">
+		    <div class="sub_header_toback">
+		        <a href="###" class="toback">&lt;&nbsp;返回</a>
+		    </div>
+		    <h6 class="sub_header_title">场景引导</h6>
+		</div>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 0;margin-top: 5px;">
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+			<div class="sub_setting_header">
+			    <div class="sub_header_toback">
+			        <a href="###" class="toback">&lt;&nbsp;返回</a>
+			    </div>
+			    <h6 class="sub_header_title">场景引导</h6>
+			</div>
+		</textarea>
+		<p style="height:10px"></p>
+		<p style="margin-bottom: 5px;color:#4D71B1">头部标题栏（滚动字幕）  PS：父级需有类名：frame-right;使用方法 w.headerRoll(speed,pause,res)</p>
+		<div class="setting_header roll_header">
+			<h6>百度关键词调用</h6>
+			<div class="view_roll_box" style="left:148px">
+				<div id="header_roll_box" class="roll_box"></div>
+			</div>
+		</div>
+		<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 0;margin-top: 5px;">
+		<textarea class="copy_text" name="" id="" cols="30" rows="10">
+				<div class="setting_header roll_header">
+					<h6>百度关键词调用</h6>
+					<div class="view_roll_box" style="left:148px">
+						<div id="header_roll_box" class="roll_box"></div>
+					</div>
 			</div>
 		</textarea>
 
@@ -1056,7 +1138,7 @@
 	<span class="statu_bubble02"></span>
 
 	<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="margin-left: 10px;vertical-align: 7px; ">
-	<textarea class="copy_text" name="" id="" cols="30" rows="10"><span class="statu_bubble01"></span></textarea>
+	<textarea class="copy_text" name="" id="" cols="30" rows="10"><span class="statu_bubble02"></span></textarea>
 
 
 	<hr>
@@ -1376,6 +1458,30 @@
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-copy</textarea>
 		</label>
+		<label class="icon iconfont icon-zhanweitu">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-zhanweitu</textarea>
+		</label>
+		<label class="icon iconfont icon-xin">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-xin</textarea>
+		</label>
+		<label class="icon iconfont icon-baidu">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-baidu</textarea>
+		</label>
+		<label class="icon iconfont icon-choujiang">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-choujiang</textarea>
+		</label>
+		<label class="icon iconfont icon-choujiang2">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-choujiang2</textarea>
+		</label>
+		<label class="icon iconfont icon-drag">
+			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
+			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-drag</textarea>
+		</label>
 	</div>
 
 	<hr>
@@ -1501,11 +1607,11 @@
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-RadioSelected</textarea>
 		</label>
-		<label class="icon iconfont icon-max">
+		<label class="icon iconfont icon-floatmax">
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-max</textarea>
 		</label>
-		<label class="icon iconfont icon-mini">
+		<label class="icon iconfont icon-floatmini">
 			<input class="copy_btn" type="button" onclick="w.copyTag(this)" value="复制" / style="width: 100%;height: 100%;display: none">
 			<textarea class="copy_text" name="" id="" cols="30" rows="10"> iconfont icon-mini</textarea>
 		</label>
@@ -1556,7 +1662,7 @@
 			<a class="walnut_close popup_close iconfont icon-Close"></a>
 		</div>
 		<div class="popup_body clearfix">
-			<div class="popup_body_content iconfont icon-Tips"></div>
+			<div class="popup_body_content iconfont icon-PopupWarning"></div>
 			<div class="submit_btn">
 		    	<a class="walnut_reset gray_btn popup_reset fr">弃用</a>
 		    	<a class="walnut_save red_btn popup_save fr">保存更改</a>
@@ -1569,7 +1675,7 @@
 			<a class="walnut_close popup_close iconfont icon-Close"></a>
 		</div>
 		<div class="popup_body clearfix">
-			<div class="popup_body_content iconfont icon-Tips"></div>
+			<div class="popup_body_content iconfont icon-PopupWarning"></div>
 			<div class="submit_btn">
 		    	<a class="walnut_reset gray_btn popup_reset fr">弃用</a>
 		    	<a class="walnut_save red_btn popup_save fr">保存更改</a>
@@ -1739,9 +1845,6 @@
 		w.lucencyAlert("这只是一条普通的测试信息")
 	})
 	//下拉菜单
-	$(".select_box").click(function(){
-		w.dropDown(this);
-	})
 	$(".select_box").on("click",".select_list > li",function(){
 		w.linsenLi(this);
 	})
@@ -1769,6 +1872,8 @@
 	})
 	// 时间选择器
 	w.timePicker(".time_select");
+	// 头部标题栏滚动字幕
+	w.headerRoll(50,1000,'[{"account":"lit15S****@163.com","meal_name":"\u767e\u5ea6\u5173\u952e\u8bcd"},{"account":"lit15L****@163.com","meal_name":"\u767e\u5ea6\u5173\u952e\u8bcd"},{"account":"lit15D****@163.com","meal_name":"\u767e\u5ea6\u5173\u952e\u8bcd"}]')
 
 	// 插件-拖动排序
 	var drag = w('.move_ul').tjgSortable({
@@ -1791,7 +1896,7 @@
 		minDate:'2018-08-15',
 		maxDate:'2022-11-11',
 		menu_btn:['confirm'],
-		small_size:1,			// 是否为小尺寸240px;默认280px;
+		small_size:0,			// 是否为小尺寸240px;默认280px;
 		callback:function(val){
 			console.log('----callback',val)
 		}
@@ -1803,7 +1908,7 @@
 		menu_btn:['clear','today','confirm'],
 		minDate:'2015-08-11',
 		maxDate:'today',
-		small_size:1,
+		small_size:0,
 		callback:function(val){
 			console.log('----callback',val)
 		}

@@ -305,7 +305,7 @@
 					if(!num&&num!==0) continue;
 					if (cssEnd[i].indexOf('%')>-1) {
 						this.style[i] = num + '%';
-						num = num*num/parseFloat(w.getStyle(this,i));
+						num = num===0 ? 0 : num*num/parseFloat(w.getStyle(this,i));
 						cssBegin[i] = {
 							num: num,
 							unit: '%',
@@ -962,18 +962,6 @@
 	Walnut.removeBlue = function(){
 		document.onselectstart = new Function("return false");
 	};
-	//下拉菜单
-	Walnut.dropDown = function(obj){
-		w.stopPropagate();
-		var _this = this;
-		var list = obj.querySelector(".select_list");
-		var oLi = obj.getElementsByTagName("li");
-		if(w.getStyle(list,'display') == "none"){
-			list.style.display = "block";
-		}else{
-			list.style.display = "none";
-		}
-	};
 	//下拉监听
 	Walnut.linsenLi = function(obj){
 		var _this = this;
@@ -1183,6 +1171,12 @@
 		w(".tab_event").on("click",function(){
 			w.singleSelect(this)
 		})
+		// 下拉菜单
+		w(".select_box").on("click",".select_arrow",function(e){
+			w.stopPropagate(e);
+			$(".select_arrow").not(this).parent(".select_box").find(".select_list").hide();
+			w(this).parent().find(".select_list").css("display") == "none" ? w(this).parent().find(".select_list").slideDown(200) : w(this).parent().find(".select_list").slideUp(200);
+		})
 		//下拉菜单-扩展
 		w(".select_extend").on('click',function(e){
 			w.stopPropagate(e);
@@ -1195,9 +1189,47 @@
 		w(document).on("click",function(e){
 			w(".select_list").hide();
 			w(".select_content").hide();
-			w(".time_select_box").slideUp(200);
+			w(".time_select_box").hide();
 		})
 	});
+	// 头部标题栏滚动字幕
+	Walnut.headerRoll = function(speed,pause,res){
+		// speed->滚动速度;pause->停顿时间;res->json数组;
+		var html='';
+		var ele=document.getElementById('header_roll_box');
+		var ress=eval("(" + res + ")");
+		w.each(ress,function(i,item){
+			html+='<p><a>'+item.account+'</a><span> 开通了'+item.meal_name+'</span></p>';
+		})
+		w('#header_roll_box').html(html+html);
+		var t;  
+		var p = false;
+		var top=ele.offsetTop;
+		ele.onmouseover = function() {  
+			p = true;  
+		}  
+		ele.onmouseout = function() {  
+			p = false;  
+		}  
+		function roll_start() {  
+			t = setInterval(scrolling,speed);  
+		} 
+		function scrolling() {
+			if(!p){
+				top--;
+				ele.style.top= top+'px';
+				if(top%28==0){
+					if(ele.offsetTop <= -(ele.offsetHeight/2)){
+						top=0;
+						ele.style.top= '0px';
+					}
+					clearInterval(t);
+					setTimeout(roll_start,pause);
+				} 
+			}  
+		}  
+		setTimeout(roll_start,pause);
+	}
 
 	// time-picker (hour & minute)
 	Walnut.timePicker = function(ele){
@@ -1349,8 +1381,8 @@
 						var newIndex = onto_this.index();
 						var is_change = newIndex==oldIndex? false : true;
 						me.activate();
+						if (options.callback) options.callback.call(onto_this,is_change,newIndex,oldIndex);
 						onto_this = null;
-						if (options.callback) options.callback(is_change,newIndex,oldIndex);
 					});
 				});
 			})
@@ -2153,6 +2185,25 @@
 			}
 			return A;
 		};
+	}
+	// 判断浏览器是否支持某一个CSS3属性
+	Walnut.supportCss3 = function(style) {
+		var prefix = ['webkit', 'Moz', 'ms', 'o'],
+		i,
+		htmlStyle = document.documentElement.style,
+		_toHumb = function (string) {
+			return string.replace(/-(\w)/g, function ($0, $1) {
+				return $1.toUpperCase();
+			});
+		},
+		humpString = [_toHumb(style)];
+		for (i in prefix){
+			humpString.push(_toHumb(prefix[i] + '-' + style));
+		}
+		for (i in humpString){
+			if (humpString[i] in htmlStyle) return true;
+		}
+		return false;
 	}
 	!function() {
 		var lastTime = 0;
